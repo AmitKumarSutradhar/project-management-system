@@ -5,32 +5,34 @@
 @section('body')
    <div class="container py-5">
        <div class="d-flex justify-content-between">
-           <h2>All Project</h2>
-           <a href="{{ route('project.create') }}" class="btn btn-primary">Add Project</a>
+           <h2>All Task</h2>
+           <a href="{{ route('task.create') }}" class="btn btn-primary">Add Task</a>
        </div>
        <div class="table-responsive">
            <table class="table">
                <thead>
                    <tr>
                        <th scope="col">#</th>
-                       <th scope="col">Project Name</th>
+                       <th scope="col">Task Name</th>
                        <th scope="col">Description</th>
-                       <th scope="col">Status</th>
+                       <th scope="col">Assigned to</th>
+                       <th scope="col">Due Date</th>
                        <th scope="col">Action</th>
                    </tr>
                </thead>
                <tbody>
-                   @foreach($projects as $item)
+                   @foreach($task as $item)
                        <tr>
                            <th scope="row">{{ $loop->iteration }}</th>
                            <td>{{ $item->name }}</td>
                            <td>{{ $item->description }}</td>
-                           <td>{{ $item->status }}</td>
+                           <td>{{ !empty($item->assigned_to) ? $item->assigned_to : 'None' }}</td>
+                           <td>{{ $item->due_date }}</td>
                            <td class="d-flex">
-                               <a href="{{ route('project.show',$item->id) }}" class="btn btn-warning">Show</a>
-                               <a href="{{ route('project.edit',$item->id) }}" class="btn btn-primary">Edit</a>
+                               <a href="{{ route('task.show',$item->id) }}" class="btn btn-warning">Show</a>
+                               <a href="{{ route('task.edit',$item->id) }}" class="btn btn-primary">Edit</a>
 
-                               <form action="{{ route('project.destroy',$item->id) }}" method="POST">
+                               <form action="{{ route('task.destroy',$item->id) }}" method="POST">
                                    @method('DELETE')
                                    @csrf
                                    <button type="submit" class="btn btn-danger">Delete</button>

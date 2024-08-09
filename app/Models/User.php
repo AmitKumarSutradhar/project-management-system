@@ -59,4 +59,29 @@ class User extends Authenticatable
     {
         return $this->hasMany(Comment::class);
     }
+
+
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class, 'role_user', 'user_id', 'role_id');
+    }
+
+    public function hasRole($role)
+    {
+        if (is_string($role)) {
+            return $this->roles()->where('name', $role)->exists();
+        }
+
+        return $this->roles()->whereIn('name', (array) $role)->exists();
+    }
+
+    public function assignRole($role)
+    {
+        return $this->roles()->attach($role);
+    }
+
+    public function removeRole($role)
+    {
+        return $this->roles()->detach($role);
+    }
 }

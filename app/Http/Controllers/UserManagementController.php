@@ -2,18 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Comment;
+use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
-class CommentController extends Controller
+class UserManagementController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
+        return view('user.index',[
+            'users' => User::all(),
+        ]);
     }
 
     /**
@@ -29,24 +30,13 @@ class CommentController extends Controller
      */
     public function store(Request $request)
     {
-//        dd($request->all());
-        $request->validate([
-            'comment' => 'required|string|max:1000',
-        ]);
-
-        Comment::create([
-            'comment' => $request->comment,
-            'task_id' => $request->task_id,
-            'user_id' => Auth::id(),
-        ]);
-
-        return redirect()->back();
+        //
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Comment $comment)
+    public function show(string $id)
     {
         //
     }
@@ -54,7 +44,7 @@ class CommentController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Comment $comment)
+    public function edit(string $id)
     {
         //
     }
@@ -62,7 +52,7 @@ class CommentController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Comment $comment)
+    public function update(Request $request, string $id)
     {
         //
     }
@@ -70,7 +60,7 @@ class CommentController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Comment $comment)
+    public function destroy(string $id)
     {
         //
     }

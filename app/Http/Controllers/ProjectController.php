@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Project;
+use App\Models\Task;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -70,7 +71,7 @@ class ProjectController extends Controller
         $project->user_id  = Auth::user()->id;
         $project->save();
 
-        return redirect()->route('project.index');
+        return redirect()->route('admin.project.index');
     }
 
     /**

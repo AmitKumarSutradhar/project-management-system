@@ -1,6 +1,6 @@
 @extends('master')
 
-@section('title', 'All Project || Project Management System')
+@section('title', 'Project Details || Project Management System')
 
 @section('body')
     <div class="container py-5">
@@ -28,6 +28,15 @@
                     </tr>
                 </tbody>
             </table>
+        </div>
+
+        <div class="">
+            <p>Task List</p>
+            <ul>
+                @foreach($project->tasks as $task)
+                    <li>{{ $task->title }}</li>
+                @endforeach
+            </ul>
         </div>
     </div>
 @endsection
