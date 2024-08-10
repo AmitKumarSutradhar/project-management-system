@@ -1,45 +1,88 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport"  content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-        <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <title>@yield('title')</title>
-        <link rel="stylesheet" href="{{asset('/')}}assets/css/vendor/bootstrap.min.css">
-    </head>
-    <body>
-        <header>
-            <div class="container">
-                <nav class="navbar navbar-expand-lg bg-body-tertiary">
-                    <div class="container-fluid">
-                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
-                            <span class="navbar-toggler-icon"></span>
-                        </button>
-                        <a class="navbar-brand" href="#">Navbar</a>
-                        <div class="collapse navbar-collapse justify-content-end" id="navbarTogglerDemo03">
-                            <ul class="navbar-nav float-end mb-2 mb-lg-0">
-                                <li class="nav-item">
-                                    <a class="nav-link active" aria-current="page" href="#">Dashboard</a>
-                                </li>
-                                <li class="nav-item">
-{{--                                    <a class="nav-link" href="{{ route('admin.project.index') }}">Projects</a>--}}
-                                </li>
-                                <li class="nav-item">
-{{--                                    <a class="nav-link" href="{{ route('admin.task.index') }}">Tasks</a>--}}
-                                </li>
-                            </ul>
-                            <div class="d-flex">
-                                <img src="{{ asset('/') }}assets/img/avatar/images.jpg" class="img-thumbnail rounded-5" alt="Avatar" style="width: 40px; height: 40px;">
-                            </div>
-                        </div>
-                    </div>
-                </nav>
-            </div>
-        </header>
-        <main>
-            @yield('body')
-        </main>
 
-        <script src="{{asset('/')}}assets/js/vendor/bootstrap.min.js"></script>
-    </body>
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
+    <title>SB Admin 2 - Dashboard</title>
+
+    <!-- Custom fonts for this template-->
+    <link href="{{ asset('/') }}assets/admin/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
+
+    <!-- Custom styles for this template-->
+    <link href="{{ asset('/') }}assets/admin/css/sb-admin-2.min.css" rel="stylesheet">
+    <script src="{{ asset('/') }}assets/admin/vendor/jquery/jquery.min.js"></script>
+
+</head>
+
+<body id="page-top">
+
+<!-- Page Wrapper -->
+<div id="wrapper">
+
+    <!-- Sidebar -->
+    @include('admin.includes.sidebar')
+    <!-- End of Sidebar -->
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+        <!-- Main Content -->
+        <div id="content">
+
+            @include('admin.includes.header')
+
+            <!-- Begin Page Content -->
+            <div class="container-fluid">
+                @yield('body')
+            </div>
+            <!-- /.container-fluid -->
+
+        </div>
+        <!-- End of Main Content -->
+
+        <!-- Footer -->
+        @include('admin.includes.footer')
+        <!-- End of Footer -->
+
+    </div>
+    <!-- End of Content Wrapper -->
+
+</div>
+<!-- End of Page Wrapper -->
+
+<!-- Scroll to Top Button-->
+<a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+</a>
+
+<!-- Bootstrap core JavaScript-->
+<script src="{{ asset('/') }}assets/admin/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+<!-- Core plugin JavaScript-->
+<script src="{{ asset('/') }}assets/admin/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+<!-- Custom scripts for all pages-->
+<script  src="{{ asset('/') }}assets/admin/js/sb-admin-2.min.js"></script>
+
+<!-- Page level plugins -->
+<script src="{{ asset('/') }}assets/admin/vendor/chart.js/Chart.min.js"></script>
+
+<!-- Page level custom scripts -->
+<script  src="{{ asset('/') }}assets/admin/js/demo/chart-area-demo.js"></script>
+<script  src="{{ asset('/') }}assets/admin/js/demo/chart-pie-demo.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+</body>
+
 </html>

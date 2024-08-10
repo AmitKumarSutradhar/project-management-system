@@ -38,7 +38,8 @@ class ProjectController extends Controller
         $project->user_id  = Auth::user()->id;
         $project->save();
 
-        return redirect()->route('project.index');
+//        return redirect()->route('project.index');
+        return response()->json(['success'=>'Project created successfully.']);
     }
 
     /**
@@ -80,6 +81,7 @@ class ProjectController extends Controller
     public function destroy(Project $project)
     {
         $project->delete();
-        return redirect()->route('project.index');
+//        return redirect()->route('project.index');
+        return response()->json(['success'=>'Project deleted successfully.']);
     }
 }

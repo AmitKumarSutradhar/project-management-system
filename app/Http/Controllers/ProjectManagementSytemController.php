@@ -7,7 +7,10 @@ use Illuminate\Http\Request;
 
 class ProjectManagementSytemController extends Controller
 {
+    public function dashboard(){
+        return view('dashboard.index');
+    }
     public function test(){
-        var_dump(User::roles());
+        return view('dashboard.index');
     }
 }

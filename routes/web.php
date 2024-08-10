@@ -3,7 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProjectManagementSytemController;
-use App\Http\Controllers\AdminController;
+use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\UserManagementController;
@@ -16,9 +16,15 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::get('/test-dashboard', function () {
-    return view('dashboard.index');
-})->middleware(['auth', 'verified'])->name('dashboard.test');
+
+Route::middleware(['auth','role:admin'])->prefix('admin')->group(function (){
+    Route::get('dashboard', [AdminController::class,'adminDashboard'])->name('admin.dashboard');
+    Route::resource('project',ProjectController::class);
+    Route::resource('task',TaskController::class);
+    Route::resource('user',UserManagementController::class);
+    Route::resource('comment',CommentController::class);
+});
+
 
 Route::resource('project',ProjectController::class);
 Route::resource('task',TaskController::class);

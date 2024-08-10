@@ -45,6 +45,22 @@ class User extends Authenticatable
         ];
     }
 
+    public function isAdmin() {
+        return $this->role === 'admin';
+    }
+
+    public function isProjectManager() {
+        return $this->role === 'project_manager';
+    }
+
+    public function isTeamMember() {
+        return $this->role === 'team_member';
+    }
+
+    public function isUser() {
+        return $this->role === 'user';
+    }
+
     public function projects()
     {
         return $this->hasMany(Project::class);

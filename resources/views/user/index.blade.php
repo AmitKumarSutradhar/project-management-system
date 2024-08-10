@@ -1,46 +1,65 @@
-@extends('master')
+@extends('admin.master')
 
-@section('title', 'All Project || Project Management System')
+@section('title', 'All User || Project Management System')
 
 @section('body')
-   <div class="container py-5">
-       <div class="d-flex justify-content-between">
-           <h2>All Users</h2>
-           <a href="{{ route('task.create') }}" class="btn btn-primary">Add Task</a>
-       </div>
-       <div class="table-responsive">
-           <table class="table">
-               <thead>
-                   <tr>
-                       <th scope="col">#</th>
-                       <th scope="col">User Name</th>
-                       <th scope="col">Description</th>
-                       <th scope="col">Status</th>
-                       <th scope="col">Action</th>
-                   </tr>
-               </thead>
-               <tbody>
-                   @foreach($users as $item)
-                       <tr>
-                           <th scope="row">{{ $loop->iteration }}</th>
-                           <td>{{ $item->name }}</td>
-                           <td>{{ $item->email }}</td>
-                           <td>{{ $item->status }}</td>
-                           <td class="d-flex">
-                               <a href="{{ route('user.show',$item->id) }}" class="btn btn-warning">Show</a>
-                               <a href="{{ route('user.edit',$item->id) }}" class="btn btn-primary mx-2">Edit</a>
+    <!-- Page Heading -->
+    <div class="d-flex justify-content-between mb-3">
+        <h1 class="h3 text-gray-800">Users</h1>
+        <div class="">
+{{--            <a href="{{ route('user.create') }}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-plus fa-sm text-white-50"></i> Create Project</a>--}}
+        </div>
+    </div>
 
-                               <form action="{{ route('user.destroy',$item->id) }}" method="POST">
-                                   @method('DELETE')
-                                   @csrf
-                                   <button type="submit" class="btn btn-danger">Delete</button>
-                               </form>
+    <!-- DataTales Example -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+{{--            <h6 class="m-0 font-weight-bold text-primary">Project Table</h6>--}}
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Project Name</th>
+                            <th>Description</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                            <th>#</th>
+                            <th>Project Name</th>
+                            <th>Role</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </tfoot>
+                    <tbody>
+                        @foreach($users as $item)
+                            <tr>
+                                <td scope="row">{{ $loop->iteration }}</td>
+                                <td>{{ $item->name }}</td>
+                                <td>{{ $item->role }}</td>
+                                <td>{{ $item->status }}</td>
+                                <td class="d-flex">
+                                    <a href="{{ route('project.show',$item->id) }}" class="btn btn-warning"><i class="fa fa-book"></i></a>
+                                    <a href="{{ route('project.edit',$item->id) }}" class="btn btn-primary mx-2"><i class="fa fa-edit"></i></a>
 
-                           </td>
-                       </tr>
-                   @endforeach
-               </tbody>
-           </table>
-       </div>
-   </div>
+                                    <form action="{{ route('project.destroy',$item->id) }}" method="POST">
+                                        @method('DELETE')
+                                        @csrf
+                                        <button type="submit" class="btn btn-danger"><i class="fa fa-trash"></i></button>
+                                    </form>
+
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 @endsection

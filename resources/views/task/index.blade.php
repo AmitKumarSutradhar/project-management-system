@@ -1,28 +1,50 @@
-@extends('master')
+@extends('admin.master')
 
 @section('title', 'All Project || Project Management System')
 
 @section('body')
-   <div class="container py-5">
-       <div class="d-flex justify-content-between">
-           <h2>All Task</h2>
-           <a href="{{ route('task.create') }}" class="btn btn-primary">Add Task</a>
-       </div>
-       <div class="table-responsive">
-           <table class="table">
-               <thead>
-                   <tr>
-                       <th scope="col">#</th>
-                       <th scope="col">Task Name</th>
-                       <th scope="col">Description</th>
-                       <th scope="col">Assigned to</th>
-                       <th scope="col">Due Date</th>
-                       <th scope="col">Action</th>
-                   </tr>
-               </thead>
-               <tbody>
-                   @foreach($task as $item)
+
+    <!-- Page Heading -->
+    <div class="d-flex justify-content-between mb-3">
+        <h1 class="h3 text-gray-800">Tasks</h1>
+        <div class="">
+            <a href="{{ route('task.create') }}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+                <i class="fas fa-plus fa-sm text-white-50"></i> Create Tasks
+            </a>
+        </div>
+    </div>
+
+    <!-- DataTales Example -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            {{--            <h6 class="m-0 font-weight-bold text-primary">Project Table</h6>--}}
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                   <thead>
                        <tr>
+                           <th>#</th>
+                           <th>Task Name</th>
+                           <th>Description</th>
+                           <th>Assigned to</th>
+                           <th>Due Date</th>
+                           <th>Action</th>
+                       </tr>
+                   </thead>
+                    <tfoot>
+                        <tr>
+                            <th>#</th>
+                            <th>Task Name</th>
+                            <th>Description</th>
+                            <th>Assigned to</th>
+                            <th>Due Date</th>
+                            <th>Action</th>
+                        </tr>
+                    </tfoot>
+                   <tbody>
+                        @foreach($task as $item)
+                        <tr>
                            <th scope="row">{{ $loop->iteration }}</th>
                            <td>{{ $item->name }}</td>
                            <td>{{ $item->description }}</td>
@@ -30,7 +52,7 @@
                            <td>{{ $item->due_date }}</td>
                            <td class="d-flex">
                                <a href="{{ route('task.show',$item->id) }}" class="btn btn-warning">Show</a>
-                               <a href="{{ route('task.edit',$item->id) }}" class="btn btn-primary">Edit</a>
+                               <a href="{{ route('task.edit',$item->id) }}" class="btn btn-primary mx-2">Edit</a>
 
                                <form action="{{ route('task.destroy',$item->id) }}" method="POST">
                                    @method('DELETE')
@@ -40,9 +62,10 @@
 
                            </td>
                        </tr>
-                   @endforeach
-               </tbody>
-           </table>
-       </div>
+                        @endforeach
+                   </tbody>
+                </table>
+            </div>
+        </div>
    </div>
 @endsection
