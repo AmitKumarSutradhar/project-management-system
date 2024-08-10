@@ -23,7 +23,7 @@
                         <tr>
                             <th>#</th>
                             <th>Project Name</th>
-                            <th>Description</th>
+                            <th>Role</th>
                             <th>Status</th>
                             <th>Action</th>
                         </tr>
@@ -45,10 +45,10 @@
                                 <td>{{ $item->role }}</td>
                                 <td>{{ $item->status }}</td>
                                 <td class="d-flex">
-                                    <a href="{{ route('project.show',$item->id) }}" class="btn btn-warning"><i class="fa fa-book"></i></a>
-                                    <a href="{{ route('project.edit',$item->id) }}" class="btn btn-primary mx-2"><i class="fa fa-edit"></i></a>
+                                    <a href="{{ route('user.show',$item->id) }}" class="btn btn-warning"><i class="fa fa-book"></i></a>
+                                    <a href="{{ route('user.edit',$item->id) }}" class="btn btn-primary mx-2"><i class="fa fa-edit"></i></a>
 
-                                    <form action="{{ route('project.destroy',$item->id) }}" method="POST">
+                                    <form action="{{ route('user.destroy',$item->id) }}" method="POST">
                                         @method('DELETE')
                                         @csrf
                                         <button type="submit" class="btn btn-danger"><i class="fa fa-trash"></i></button>

@@ -2,17 +2,22 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Role;
+use App\DataTables\RoleDataTable;
 use Illuminate\Http\Request;
+use Spatie\Permission\Models\Role;
+use Yajra\DataTables\Services\DataTable;
+use function Livewire\Features\SupportFormObjects\all;
 
 class RoleController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        return view('admin.role.index',[
+            'roles' => Role::all(),
+        ]);
     }
 
     /**
@@ -28,7 +33,12 @@ class RoleController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        dd($request-all());
+        $role = Role::create([
+            'name' => $request->name,
+        ]);
+
+        return response()->json(['success'=>'Role created successfully.']);
     }
 
     /**
@@ -60,6 +70,7 @@ class RoleController extends Controller
      */
     public function destroy(Role $role)
     {
-        //
+        $role->delete();
+        return response()->json(['success'=>'Project deleted successfully.']);
     }
 }

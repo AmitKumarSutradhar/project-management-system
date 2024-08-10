@@ -7,10 +7,7 @@ use Illuminate\Http\Request;
 
 class ProjectManagementSytemController extends Controller
 {
-    public function dashboard(){
-        return view('dashboard.index');
-    }
-    public function test(){
-        return view('dashboard.index');
+    public function userDashboard(){
+        return view('user-dashboard.dashboard.index');
     }
 }
