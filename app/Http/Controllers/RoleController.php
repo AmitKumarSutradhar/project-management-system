@@ -5,8 +5,7 @@ namespace App\Http\Controllers;
 use App\DataTables\RoleDataTable;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
-use Yajra\DataTables\Services\DataTable;
-use function Livewire\Features\SupportFormObjects\all;
+use Yajra\DataTables\DataTables;
 
 class RoleController extends Controller
 {
@@ -15,6 +14,15 @@ class RoleController extends Controller
      */
     public function index(Request $request)
     {
+        if ($request->ajax()){
+            $roles = Role::all();
+            return DataTables::of($roles)
+                ->addColumn('action', function ($roles) {
+                    return '<a href="#" data-id="'.$roles->id.'" class="editRole btn btn-sm btn-primary">Edit</a>
+                        <a href="#" data-id="'.$roles->id.'" class="deleteRole btn btn-sm btn-danger">Delete</a>';
+                })
+                ->make(true);
+        }
         return view('admin.role.index',[
             'roles' => Role::all(),
         ]);
@@ -33,7 +41,6 @@ class RoleController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request-all());
         $role = Role::create([
             'name' => $request->name,
         ]);
@@ -54,7 +61,9 @@ class RoleController extends Controller
      */
     public function edit(Role $role)
     {
-        //
+        return response()->json([
+            'role'=>$role
+        ]);
     }
 
     /**
@@ -62,7 +71,9 @@ class RoleController extends Controller
      */
     public function update(Request $request, Role $role)
     {
-        //
+        $role->name = $request->name;
+        $role->save();
+        return response()->json(['success'=>'Role info updated successfully.']);
     }
 
     /**
@@ -71,6 +82,6 @@ class RoleController extends Controller
     public function destroy(Role $role)
     {
         $role->delete();
-        return response()->json(['success'=>'Project deleted successfully.']);
+        return response()->json(['success'=>'Role deleted successfully.']);
     }
 }
