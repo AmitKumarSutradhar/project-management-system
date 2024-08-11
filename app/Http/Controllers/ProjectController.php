@@ -25,7 +25,7 @@ class ProjectController extends Controller
                 ->make(true);
         }
         return view('admin.project.index',[
-//            'projects' => Project::all(),
+            'projects' => Project::all(),
         ]);
     }
 
@@ -48,7 +48,6 @@ class ProjectController extends Controller
         $project->user_id  = Auth::user()->id;
         $project->save();
 
-//        return redirect()->route('project.index');
         return response()->json(['success'=>'Project created successfully.']);
     }
 

@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 class Task extends Model
 {
     use HasFactory;
+    protected $fillable = ['title', 'description', 'project_id', 'assigned_to', 'due_date'];
 
     public function project()
     {

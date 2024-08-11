@@ -4,16 +4,30 @@ namespace App\Http\Controllers;
 
 use App\Models\Project;
 use App\Models\Task;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Yajra\DataTables\DataTables;
 
 class TaskController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        return view('task.index',[
+        if ($request->ajax()){
+            $tasks = Task::all();
+            return DataTables::of($tasks)
+                ->addColumn('action', function ($task) {
+                    return '<a href="#" id="'.$task->id.'" class="editTask btn btn-sm btn-primary">Edit</a>
+                        <a href="#" id="'.$task->id.'" class="deleteTask btn btn-sm btn-danger">Delete</a>';
+                })
+                ->make(true);
+        }
+
+        return view('admin.task.index',[
+            'projects' => Project::all(),
+            'users' => User::all(),
             'task' => Task::all(),
         ]);
     }
@@ -23,8 +37,8 @@ class TaskController extends Controller
      */
     public function create()
     {
-        return view('task.create',[
-            'projects' => Project::all(),
+        return view('admin.task.create',[
+            'projects' => Task::all(),
         ]);
     }
 
@@ -33,14 +47,19 @@ class TaskController extends Controller
      */
     public function store(Request $request)
     {
+//        return response()->json([
+//            'request' => $request->all(),
+//        ]);
+
         $task = new Task();
         $task->title = $request->title;
         $task->description = $request->description;
         $task->project_id  = $request->project_id;
+        $task->assigned_to  = $request->assigned_to;
         $task->due_date  = $request->due_date;
         $task->save();
 
-        return redirect()->route('task.index');
+        return response()->json(['success'=>'Task created successfully.']);
     }
 
     /**
@@ -48,7 +67,7 @@ class TaskController extends Controller
      */
     public function show(Task $task)
     {
-        return view('task.show',[
+        return view('admin.task.show',[
             'task' => $task,
         ]);
     }
@@ -74,6 +93,7 @@ class TaskController extends Controller
      */
     public function destroy(Task $task)
     {
-        //
+        $task->delete();
+        return response()->json(['success'=>'Task deleted successfully.']);
     }
 }
