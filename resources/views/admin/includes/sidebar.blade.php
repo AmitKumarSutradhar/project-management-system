@@ -75,7 +75,7 @@
             <div class="bg-white py-2 collapse-inner rounded">
                 <a class="collapse-item" href="{{ route('admin.role.index') }}">Manage Role</a>
                 <a class="collapse-item" href="{{ route('admin.permission.index') }}">Manage Permission</a>
-                <a class="collapse-item" href="{{ route('admin.role.index') }}">Assign Permission</a>
+{{--                <a class="collapse-item" href="{{ route('admin.role.index') }}">Assign Permission</a>--}}
             </div>
         </div>
     </li>

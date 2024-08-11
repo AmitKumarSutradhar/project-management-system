@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\DataTables\RoleDataTable;
 use Illuminate\Http\Request;
+use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 use Yajra\DataTables\DataTables;
 

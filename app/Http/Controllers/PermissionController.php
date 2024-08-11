@@ -3,15 +3,28 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Spatie\Permission\Models\Permission;
+use Yajra\DataTables\DataTables;
 
 class PermissionController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        if ($request->ajax()){
+            $permission = Permission::all();
+            return DataTables::of($permission)
+                ->addColumn('action', function ($permission) {
+                    return '<a href="#" data-id="'.$permission->id.'" class="editPermission btn btn-sm btn-primary">Edit</a>
+                        <a href="#" data-id="'.$permission->id.'" class="deletePermission btn btn-sm btn-danger">Delete</a>';
+                })
+                ->make(true);
+        }
+        return view('admin.permission.index',[
+//            'roles' => Role::all(),
+        ]);
     }
 
     /**
@@ -27,7 +40,11 @@ class PermissionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $permission = Permission::create([
+            'name' => $request->name,
+        ]);
+
+        return response()->json(['success'=>'Permission created successfully.']);
     }
 
     /**
@@ -41,24 +58,29 @@ class PermissionController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Permission $permission)
     {
-        //
+        return response()->json([
+            'permission'=> $permission
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Permission $permission)
     {
-        //
+        $permission->name = $request->name;
+        $permission->save();
+        return response()->json(['success'=>'Permission info updated successfully.']);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Permission $permission)
     {
-        //
+        $permission->delete();
+        return response()->json(['success'=>'Permission deleted successfully.']);
     }
 }
