@@ -36,49 +36,49 @@
         <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
 {{--                <h6 class="collapse-header">Custom Components:</h6>--}}
-                <a class="collapse-item" href="{{ route('project.index') }}">Manage Projects</a>
-                <a class="collapse-item" href="{{ route('project.create') }}">Create Project</a>
+                <a class="collapse-item" href="{{ route('admin.project.index') }}">Manage Projects</a>
+                <a class="collapse-item" href="{{ route('admin.project.create') }}">Create Project</a>
             </div>
         </div>
     </li>
 
-    <!-- Nav Item - Task -->
-    <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTask"
-           aria-expanded="true" aria-controls="collapseTask">
-            <i class="fas fa-fw fa-cog"></i>
-            <span>Tasks</span>
-        </a>
-        <div id="collapseTask" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-            <div class="bg-white py-2 collapse-inner rounded">
-                <a class="collapse-item" href="{{ route('task.index') }}">Manage Tasks</a>
-                <a class="collapse-item" href="{{ route('task.create') }}">Create Task</a>
-            </div>
-        </div>
-    </li>
+{{--    <!-- Nav Item - Task -->--}}
+{{--    <li class="nav-item">--}}
+{{--        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTask"--}}
+{{--           aria-expanded="true" aria-controls="collapseTask">--}}
+{{--            <i class="fas fa-fw fa-cog"></i>--}}
+{{--            <span>Tasks</span>--}}
+{{--        </a>--}}
+{{--        <div id="collapseTask" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">--}}
+{{--            <div class="bg-white py-2 collapse-inner rounded">--}}
+{{--                <a class="collapse-item" href="{{ route('task.index') }}">Manage Tasks</a>--}}
+{{--                <a class="collapse-item" href="{{ route('task.create') }}">Create Task</a>--}}
+{{--            </div>--}}
+{{--        </div>--}}
+{{--    </li>--}}
 
-    <!-- Nav Item - Tables -->
-    <li class="nav-item">
-        <a class="nav-link" href="{{ route('user.index') }}">
-            <i class="fas fa-fw fa-user"></i>
-            <span>Users</span></a>
-    </li>
+{{--    <!-- Nav Item - Tables -->--}}
+{{--    <li class="nav-item">--}}
+{{--        <a class="nav-link" href="{{ route('user.index') }}">--}}
+{{--            <i class="fas fa-fw fa-user"></i>--}}
+{{--            <span>Users</span></a>--}}
+{{--    </li>--}}
 
-    <!-- Nav Item - Role and Permission -->
-    <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#roleAndPermission"
-           aria-expanded="true" aria-controls="collapseTwo">
-            <i class="fas fa-fw fa-cog"></i>
-            <span>Role & Permission</span>
-        </a>
-        <div id="roleAndPermission" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-            <div class="bg-white py-2 collapse-inner rounded">
-                <a class="collapse-item" href="{{ route('role.index') }}">Manage Role</a>
-                <a class="collapse-item" href="{{ route('permission.create') }}">Manage Permission</a>
+{{--    <!-- Nav Item - Role and Permission -->--}}
+{{--    <li class="nav-item">--}}
+{{--        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#roleAndPermission"--}}
+{{--           aria-expanded="true" aria-controls="collapseTwo">--}}
+{{--            <i class="fas fa-fw fa-cog"></i>--}}
+{{--            <span>Role & Permission</span>--}}
+{{--        </a>--}}
+{{--        <div id="roleAndPermission" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">--}}
+{{--            <div class="bg-white py-2 collapse-inner rounded">--}}
+{{--                <a class="collapse-item" href="{{ route('role.index') }}">Manage Role</a>--}}
+{{--                <a class="collapse-item" href="{{ route('permission.create') }}">Manage Permission</a>--}}
 {{--                <a class="collapse-item" href="{{ route('role.create') }}">Assign Permission</a>--}}
-            </div>
-        </div>
-    </li>
+{{--            </div>--}}
+{{--        </div>--}}
+{{--    </li>--}}
 
     <!-- Divider -->
     <hr class="sidebar-divider d-none d-md-block">

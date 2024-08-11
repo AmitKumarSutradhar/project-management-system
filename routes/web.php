@@ -14,13 +14,13 @@ use App\Http\Controllers\PermissionController;
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('home');
 
 //Route::get('/dashboard', [ProjectManagementSytemController::class,'userDashboard'])->middleware(['auth', 'verified'])->name('dashboard');
 
 
-Route::middleware(['auth','role:admin'])->prefix('admin')->group(function (){
-    Route::get('dashboard', [AdminController::class,'adminDashboard'])->name('admin.dashboard');
+Route::middleware(['auth','role:admin'])->prefix('admin')->name('admin.')->group(function (){
+    Route::get('dashboard', [AdminController::class,'adminDashboard'])->name('dashboard');
     Route::resource('project',ProjectController::class);
     Route::resource('task',TaskController::class);
     Route::resource('user',UserManagementController::class);
@@ -29,16 +29,14 @@ Route::middleware(['auth','role:admin'])->prefix('admin')->group(function (){
     Route::resource('permission',PermissionController::class);
 });
 
-Route::middleware(['auth'])->prefix('user')->group(function (){
-    Route::get('dashboard', [UserController::class,'userDashboard'])->name('user.dashboard');
-    Route::resource('project',ProjectController::class);
-    Route::resource('task',TaskController::class);
-    Route::resource('user',UserManagementController::class);
-    Route::resource('comment',CommentController::class);
-});
+//Route::middleware(['auth'])->prefix('user')->group(function (){
+//    Route::get('dashboard', [UserController::class,'userDashboard'])->name('user.dashboard');
+//    Route::resource('project',ProjectController::class);
+//    Route::resource('task',TaskController::class);
+//    Route::resource('user',UserManagementController::class);
+//    Route::resource('comment',CommentController::class);
+//});
 
-
-//Route::get('dashboard', [UserController::class,'dashboard'])->name('dashboard');
 
 //Route::resource('project',ProjectController::class);
 //Route::resource('task',TaskController::class);

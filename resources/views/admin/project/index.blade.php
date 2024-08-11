@@ -81,7 +81,7 @@
                         <span aria-hidden="true">×</span>
                     </button>
                 </div>
-                <form id="createProjectForm" name="createProjectForm" action="{{ route('project.store') }}" method="POST">
+                <form id="createProjectForm" name="createProjectForm" action="{{ route('admin.project.store') }}" method="POST">
                     @csrf
                     <div class="modal-body">
                         <div class="mb-3">
@@ -106,13 +106,51 @@
         </div>
     </div>
 
+    <!-- Project Edit Modal-->
+    <div class="modal fade" id="editProjectInfo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editProjectModalHeading">Edit project info</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <form id="updateProjectForm" name="updateProjectForm" action="{{ route('admin.project.store') }}" method="POST">
+                    @csrf
+                    <div class="modal-body">
+                        <input type="hidden" name="" id="edit-project-id">
+                        <div class="mb-3">
+                            <label for="projectName" class="form-label">Project Name</label>
+                            <input type="text" name="name" class="form-control"  id="editProjectName" aria-describedby="emailHelp">
+                        </div>
+                        <div class="mb-3">
+                            <label for="projectDescription" class="form-label" >Project Description</label>
+                            <textarea name="description" class="form-control" id="editProjectDescription"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="projectImage" class="form-label">Image</label>
+                            <input type="file" name="image" class="form-control" id="projectImage">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                        <button type="submit"  id="updateProjectData" class="btn btn-primary">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 
+
+    <!-- Data table data show -->
     <script>
         $(document).ready(function() {
             $('#project-datatable').DataTable({
                 processing: true,
                 serverSide: true,
-                ajax: '{{ route('project.index') }}',
+                ajax: '{{ route('admin.project.index') }}',
                 columns: [
                     { data: 'id', name: 'id' },
                     { data: 'name', name: 'name' },
@@ -123,6 +161,7 @@
             });
         });
     </script>
+    <!-- Data table data show -->
 
     <script>
         $(function () {
@@ -133,7 +172,8 @@
                 }
             });
 
-            $('#createNewProject').on('click',function () {
+            <!-- Create New Project Ajax Start -->
+            $('body').on('click','#createNewProject',function () {
                 $('#savedata').val("create-project");
                 $('#id').val('');
                 $('#createProjectForm').trigger("reset");
@@ -141,32 +181,20 @@
                 $('#projectAjaxModel').modal('show');
             });
 
-            {{--$('body').on('click', '.editProduct', function () {--}}
-            {{--    var id = $(this).data('id');--}}
-            {{--    $.get("{{ route('products.index') }}" + '/' + id + '/edit', function (data) {--}}
-            {{--        $('#modelHeading').html("Edit Product");--}}
-            {{--        $('#savedata').val("edit-user");--}}
-            {{--        $('#ajaxModelexa').modal('show');--}}
-            {{--        $('#id').val(data.id);--}}
-            {{--        $('#title').val(data.title);--}}
-            {{--        $('#description').val(data.description);--}}
-            {{--    })--}}
-            {{--});--}}
-
-            <!-- Create New Project Ajax Start -->
             $('#savedata').click(function (e) {
                 e.preventDefault();
                 $(this).html('Sending..');
 
                 $.ajax({
                     data: $('#createProjectForm').serialize(),
-                    url: "{{ route('project.store') }}",
+                    url: "{{ route('admin.project.store') }}",
                     type: "POST",
                     dataType: 'json',
                     success: function (data) {
                         $('#createProjectForm').trigger("reset");
                         $('#projectAjaxModel').modal('hide');
                         $('#project-datatable').DataTable().ajax.reload();
+                        $('#savedata').html('Send');
 
                         const Toast = Swal.mixin({
                             toast: true,
@@ -193,15 +221,72 @@
             });
             <!-- Create New Project Ajax End -->
 
+
+            <!-- Edit Project Ajax End -->
+            $('body').on('click', '.editProject', function () {
+                var id = $(this).attr('id');
+                // console.log(id)
+                $.get("{{ route('admin.project.index') }}" + '/' + id + '/edit', function (data) {
+                    $('#editProjectModalHeading').html("Edit Project Info check");
+                    $('#savedata').val("edit-user");
+                    $('#id').val(data.id);
+                    $('#edit-project-id').val(data.project.id);
+                    $('#editProjectName').val(data.project.name);
+                    $('#editProjectDescription').val(data.project.description);
+                    $('#editProjectInfo').modal('show');
+                })
+            });
+            <!-- Edit Project Ajax End -->
+
+            <!-- Update Project Ajax End -->
+            $('#updateProjectForm').on('submit', function (e) {
+                e.preventDefault();
+                var id = $('#edit-project-id').val();
+                var formData = $(this).serialize();
+                // console.log(id)
+                $('#updateProjectData').html('Updating...');
+
+                $.ajax({
+                    url: "{{ route('admin.project.index') }}" + '/' + id,
+                    method: "PUT",
+                    data: formData,
+                    success: function (response) {
+                        // console.log(response)
+                        $('#updateProjectForm').trigger("reset");
+                        $('#editProjectInfo').modal('hide');
+                        $('#project-datatable').DataTable().ajax.reload();
+                        $('#updateProjectData').html('Update');
+                        // $('#updateProjectData').html('Update');
+
+                        const Toast = Swal.mixin({
+                            toast: true,
+                            position: "top-end",
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true,
+                            didOpen: (toast) => {
+                                toast.onmouseenter = Swal.stopTimer;
+                                toast.onmouseleave = Swal.resumeTimer;
+                            }
+                        });
+                        Toast.fire({
+                            icon: "success",
+                            title: response.success,
+                        });
+
+                    },
+                    error: function (data) {
+                        console.log('Error:', data);
+                        $('#savedata').html('Save Changes');
+                    }
+                });
+            });
+            <!-- Update Project Ajax End -->
+
             <!-- Delete Project Ajax Start -->
             $('body').on('click', '.deleteProject', function () {
-
                 var id = $(this).attr('id');
-                var token = $("meta[name='csrf-token']").attr("content");
-                var url = "{{ route('updateArticle', ":id") }}";
-                url = url.replace(':id', id);
                 // console.log(id);
-                // console.log('success:', data);
                 Swal.fire({
                     title: "Are you sure?",
                     text: "You won't be able to revert this!",
@@ -213,12 +298,8 @@
                     }).then((result) => {
                         if (result.isConfirmed) {
                             $.ajax({
-                                type: "DELETE",
-                                url: "/project/"+ id,
-                                // data: {
-                                //     "id": id,
-                                //     "_token": token,
-                                // },
+                                url: "{{ route('admin.project.index') }}" + '/' + id,
+                                method: "DELETE",
                                 success: function (data) {
                                     console.log('Hello');
                                     // Ask for confirm delete

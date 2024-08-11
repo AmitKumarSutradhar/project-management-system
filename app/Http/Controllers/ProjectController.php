@@ -3,19 +3,29 @@
 namespace App\Http\Controllers;
 
 use App\Models\Project;
-use App\Models\Task;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Yajra\DataTables\DataTables;
+use function Illuminate\Foundation\Configuration\respond;
 
 class ProjectController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        return view('project.index',[
-            'projects' => Project::all(),
+        if ($request->ajax()){
+            $projects = Project::all();
+            return DataTables::of($projects)
+                ->addColumn('action', function ($project) {
+                    return '<a href="#" id="'.$project->id.'" class="editProject btn btn-sm btn-primary">Edit</a>
+                        <a href="#" id="'.$project->id.'" class="deleteProject btn btn-sm btn-danger">Delete</a>';
+                })
+                ->make(true);
+        }
+        return view('admin.project.index',[
+//            'projects' => Project::all(),
         ]);
     }
 
@@ -47,7 +57,7 @@ class ProjectController extends Controller
      */
     public function show(Project $project)
     {
-        return view('project.show',[
+        return view('admin.project.show',[
             'project' => $project,
         ]);
     }
@@ -57,8 +67,11 @@ class ProjectController extends Controller
      */
     public function edit(Project $project)
     {
-        return view('project.edit',[
-           'project' => $project,
+//        return view('admin.project.edit',[
+//           'project' => $project,
+//        ]);
+        return response()->json([
+            'project' => $project,
         ]);
     }
 
@@ -72,7 +85,9 @@ class ProjectController extends Controller
         $project->user_id  = Auth::user()->id;
         $project->save();
 
-        return redirect()->route('admin.project.index');
+        return response()->json([
+            'success' => 'Project updated successfully.',
+        ]);
     }
 
     /**
@@ -81,7 +96,6 @@ class ProjectController extends Controller
     public function destroy(Project $project)
     {
         $project->delete();
-//        return redirect()->route('project.index');
         return response()->json(['success'=>'Project deleted successfully.']);
     }
 }
