@@ -64,21 +64,21 @@
             <span>Users</span></a>
     </li>
 
-{{--    <!-- Nav Item - Role and Permission -->--}}
-{{--    <li class="nav-item">--}}
-{{--        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#roleAndPermission"--}}
-{{--           aria-expanded="true" aria-controls="collapseTwo">--}}
-{{--            <i class="fas fa-fw fa-cog"></i>--}}
-{{--            <span>Role & Permission</span>--}}
-{{--        </a>--}}
-{{--        <div id="roleAndPermission" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">--}}
-{{--            <div class="bg-white py-2 collapse-inner rounded">--}}
-{{--                <a class="collapse-item" href="{{ route('role.index') }}">Manage Role</a>--}}
-{{--                <a class="collapse-item" href="{{ route('permission.create') }}">Manage Permission</a>--}}
-{{--                <a class="collapse-item" href="{{ route('role.create') }}">Assign Permission</a>--}}
-{{--            </div>--}}
-{{--        </div>--}}
-{{--    </li>--}}
+    <!-- Nav Item - Role and Permission -->
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#roleAndPermission"
+           aria-expanded="true" aria-controls="collapseTwo">
+            <i class="fas fa-fw fa-cog"></i>
+            <span>Role & Permission</span>
+        </a>
+        <div id="roleAndPermission" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <a class="collapse-item" href="{{ route('admin.role.index') }}">Manage Role</a>
+                <a class="collapse-item" href="{{ route('admin.permission.index') }}">Manage Permission</a>
+                <a class="collapse-item" href="{{ route('admin.role.index') }}">Assign Permission</a>
+            </div>
+        </div>
+    </li>
 
     <!-- Divider -->
     <hr class="sidebar-divider d-none d-md-block">

@@ -1,6 +1,6 @@
 @extends('admin.master')
 
-@section('title', 'All Project || Project Management System')
+@section('title', 'All Roles || Project Management System')
 
 @section('body')
     <!-- Page Heading -->
@@ -38,18 +38,18 @@
                         </tr>
                     </tfoot>
                     <tbody>
-                        @foreach($roles as $item)
-                            <tr>
-                                <td scope="row">{{ $loop->iteration }}</td>
-                                <td>{{ $item->name }}</td>
-                                <td>{{ $item->name }}</td>
-                                <td class="d-flex">
-                                    <a href="{{ route('project.show',$item->id) }}" class="btn btn-warning"><i class="fa fa-book"></i></a>
-                                    <a href="javascript:void(0)"  id="{{ $item->id }}" class="editRole btn btn-primary mx-2"><i class="fa fa-edit"></i></a>
-                                    <a href="javascript:void(0)" id="{{ $item->id }}" class="deleteRole btn btn-danger"><i class="fa fa-trash"></i></a>
-                                </td>
-                            </tr>
-                        @endforeach
+{{--                        @foreach($roles as $item)--}}
+{{--                            <tr>--}}
+{{--                                <td scope="row">{{ $loop->iteration }}</td>--}}
+{{--                                <td>{{ $item->name }}</td>--}}
+{{--                                <td>{{ $item->name }}</td>--}}
+{{--                                <td class="d-flex">--}}
+{{--                                    <a href="{{ route('project.show',$item->id) }}" class="btn btn-warning"><i class="fa fa-book"></i></a>--}}
+{{--                                    <a href="javascript:void(0)"  id="{{ $item->id }}" class="editRole btn btn-primary mx-2"><i class="fa fa-edit"></i></a>--}}
+{{--                                    <a href="javascript:void(0)" id="{{ $item->id }}" class="deleteRole btn btn-danger"><i class="fa fa-trash"></i></a>--}}
+{{--                                </td>--}}
+{{--                            </tr>--}}
+{{--                        @endforeach--}}
                     </tbody>
                 </table>
             </div>
@@ -66,7 +66,7 @@
                         <span aria-hidden="true">×</span>
                     </button>
                 </div>
-                <form id="addNewRoleForm" name="addNewRoleForm" action="{{ route('project.store') }}" method="POST">
+                <form id="addNewRoleForm" name="addNewRoleForm" action="{{ route('admin.project.store') }}" method="POST">
                     @csrf
                     <div class="modal-body">
                         <div class="mb-3">
@@ -94,7 +94,7 @@
                         <span aria-hidden="true">×</span>
                     </button>
                 </div>
-                <form id="updateRoleForm" name="updateRoleForm" action="{{ route('project.store') }}" method="POST">
+                <form id="updateRoleForm" name="updateRoleForm" action="{{ route('admin.project.store') }}" method="POST">
                     @csrf
                     <div class="modal-body">
                         <div class="mb-3">
@@ -114,162 +114,162 @@
 
 
     <script>
-        $(function () {
+        {{--$(function () {--}}
 
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
+        {{--    $.ajaxSetup({--}}
+        {{--        headers: {--}}
+        {{--            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')--}}
+        {{--        }--}}
+        {{--    });--}}
 
-            $('#createNewRole').on('click',function () {
-                $('#savedata').val("create-project");
-                $('#id').val('');
-                $('#addNewRoleForm').trigger("reset");
-                $('#modelHeading').html("Create New Role");
-                $('#rolesCreateModal').modal('show');
-            });
+        {{--    $('#createNewRole').on('click',function () {--}}
+        {{--        $('#savedata').val("create-project");--}}
+        {{--        $('#id').val('');--}}
+        {{--        $('#addNewRoleForm').trigger("reset");--}}
+        {{--        $('#modelHeading').html("Create New Role");--}}
+        {{--        $('#rolesCreateModal').modal('show');--}}
+        {{--    });--}}
 
-            <!-- Edit Role Info -->
-            // $('body').on('click', '.editRole', function () {
-            //     var id = $(this).attr('id');
-            //     $.get("role/"+ id + '/edit', function (data) {
-            //         console.log(data)
-            //         $('#modelHeading').html("Edit Role");
-            //         $('#savedata').val("edit-role");
-            //         $('#rolesCreateModal').modal('show');
-            //         $('#id').val(data.id);
-            //         $('#roleName').val(data.name);
-            //         // $('#description').val(data.description);
-            //     })
-            // });
+        {{--    <!-- Edit Role Info -->--}}
+        {{--    // $('body').on('click', '.editRole', function () {--}}
+        {{--    //     var id = $(this).attr('id');--}}
+        {{--    //     $.get("role/"+ id + '/edit', function (data) {--}}
+        {{--    //         console.log(data)--}}
+        {{--    //         $('#modelHeading').html("Edit Role");--}}
+        {{--    //         $('#savedata').val("edit-role");--}}
+        {{--    //         $('#rolesCreateModal').modal('show');--}}
+        {{--    //         $('#id').val(data.id);--}}
+        {{--    //         $('#roleName').val(data.name);--}}
+        {{--    //         // $('#description').val(data.description);--}}
+        {{--    //     })--}}
+        {{--    // });--}}
 
-            <!-- Add New Role -->
-            $('#saveRoleData').click(function (e) {
-                e.preventDefault();
-                $(this).html('Sending..');
+        {{--    <!-- Add New Role -->--}}
+        {{--    $('#saveRoleData').click(function (e) {--}}
+        {{--        e.preventDefault();--}}
+        {{--        $(this).html('Sending..');--}}
 
-                $.ajax({
-                    data: $('#addNewRoleForm').serialize(),
-                    url: "{{ route('role.store') }}",
-                    type: "POST",
-                    dataType: 'json',
-                    success: function (data) {
-                        $('#addNewRoleForm').trigger("reset");
-                        $('#rolesCreateModal').modal('hide');
-                        // table.draw();
+        {{--        $.ajax({--}}
+        {{--            data: $('#addNewRoleForm').serialize(),--}}
+        {{--            url: "{{ route('role.store') }}",--}}
+        {{--            type: "POST",--}}
+        {{--            dataType: 'json',--}}
+        {{--            success: function (data) {--}}
+        {{--                $('#addNewRoleForm').trigger("reset");--}}
+        {{--                $('#rolesCreateModal').modal('hide');--}}
+        {{--                // table.draw();--}}
 
-                        const Toast = Swal.mixin({
-                            toast: true,
-                            position: "top-end",
-                            showConfirmButton: false,
-                            timer: 3000,
-                            timerProgressBar: true,
-                            didOpen: (toast) => {
-                                toast.onmouseenter = Swal.stopTimer;
-                                toast.onmouseleave = Swal.resumeTimer;
-                            }
-                        });
-                        Toast.fire({
-                            icon: "success",
-                            title: data.success,
-                        });
+        {{--                const Toast = Swal.mixin({--}}
+        {{--                    toast: true,--}}
+        {{--                    position: "top-end",--}}
+        {{--                    showConfirmButton: false,--}}
+        {{--                    timer: 3000,--}}
+        {{--                    timerProgressBar: true,--}}
+        {{--                    didOpen: (toast) => {--}}
+        {{--                        toast.onmouseenter = Swal.stopTimer;--}}
+        {{--                        toast.onmouseleave = Swal.resumeTimer;--}}
+        {{--                    }--}}
+        {{--                });--}}
+        {{--                Toast.fire({--}}
+        {{--                    icon: "success",--}}
+        {{--                    title: data.success,--}}
+        {{--                });--}}
 
-                    },
-                    error: function (data) {
-                        console.log('Error:', data);
-                        $('#savedata').html('Save Changes');
-                    }
-                });
-            });
+        {{--            },--}}
+        {{--            error: function (data) {--}}
+        {{--                console.log('Error:', data);--}}
+        {{--                $('#savedata').html('Save Changes');--}}
+        {{--            }--}}
+        {{--        });--}}
+        {{--    });--}}
 
-            <!-- Edit Role Info -->
+        {{--    <!-- Edit Role Info -->--}}
 
-            $('.editRole').on('click',function () {
-                $('#savedata').val("create-project");
-                $('#id').val('');
-                // $('#addNewRoleForm').trigger("reset");
-                $('#modelHeading').html("Update Role Info");
-                $('#rolesCreateModal').modal('show');
-            });
+        {{--    $('.editRole').on('click',function () {--}}
+        {{--        $('#savedata').val("create-project");--}}
+        {{--        $('#id').val('');--}}
+        {{--        // $('#addNewRoleForm').trigger("reset");--}}
+        {{--        $('#modelHeading').html("Update Role Info");--}}
+        {{--        $('#rolesCreateModal').modal('show');--}}
+        {{--    });--}}
 
-            $('body').on('click', '#updateRoleData', function () {
+        {{--    $('body').on('click', '#updateRoleData', function () {--}}
 
-                var id = $(this).attr('id');
-                var name =  $('#roleName').val();
-                console.log(id);
-                console.log(name);
-                // console.log('success:', data);
-                // confirm("Are You sure want to delete this Product!");
+        {{--        var id = $(this).attr('id');--}}
+        {{--        var name =  $('#roleName').val();--}}
+        {{--        console.log(id);--}}
+        {{--        console.log(name);--}}
+        {{--        // console.log('success:', data);--}}
+        {{--        // confirm("Are You sure want to delete this Product!");--}}
 
-                $.ajax({
-                    type: "PUT",
-                    url: "role/"+ id,
-                    {{--url: "{{ route('project.destroy') }}" + '/' + id,--}}
-                    success: function (data) {
-                        // table.draw();
-                        const Toast = Swal.mixin({
-                            toast: true,
-                            position: "top-end",
-                            showConfirmButton: false,
-                            timer: 3000,
-                            timerProgressBar: true,
-                            didOpen: (toast) => {
-                                toast.onmouseenter = Swal.stopTimer;
-                                toast.onmouseleave = Swal.resumeTimer;
-                            }
-                        });
-                        Toast.fire({
-                            icon: "success",
-                            title: data.success,
-                        });
-                    },
-                    error: function (data) {
-                        console.log('Error:', data);
-                    }
-                });
-            });
-
-
+        {{--        $.ajax({--}}
+        {{--            type: "PUT",--}}
+        {{--            url: "role/"+ id,--}}
+        {{--            --}}{{--url: "{{ route('project.destroy') }}" + '/' + id,--}}
+        {{--            success: function (data) {--}}
+        {{--                // table.draw();--}}
+        {{--                const Toast = Swal.mixin({--}}
+        {{--                    toast: true,--}}
+        {{--                    position: "top-end",--}}
+        {{--                    showConfirmButton: false,--}}
+        {{--                    timer: 3000,--}}
+        {{--                    timerProgressBar: true,--}}
+        {{--                    didOpen: (toast) => {--}}
+        {{--                        toast.onmouseenter = Swal.stopTimer;--}}
+        {{--                        toast.onmouseleave = Swal.resumeTimer;--}}
+        {{--                    }--}}
+        {{--                });--}}
+        {{--                Toast.fire({--}}
+        {{--                    icon: "success",--}}
+        {{--                    title: data.success,--}}
+        {{--                });--}}
+        {{--            },--}}
+        {{--            error: function (data) {--}}
+        {{--                console.log('Error:', data);--}}
+        {{--            }--}}
+        {{--        });--}}
+        {{--    });--}}
 
 
 
-            <!-- Delete Project -->
-            $('body').on('click', '.deleteRole', function () {
 
-                var id = $(this).attr('id');
-                // console.log(id);
-                // console.log('success:', data);
-                confirm("Are You sure want to delete this Product!");
 
-                $.ajax({
-                    type: "DELETE",
-                    url: "role/"+ id,
-                    {{--url: "{{ route('project.destroy') }}" + '/' + id,--}}
-                    success: function (data) {
-                        // table.draw();
-                        const Toast = Swal.mixin({
-                            toast: true,
-                            position: "top-end",
-                            showConfirmButton: false,
-                            timer: 3000,
-                            timerProgressBar: true,
-                            didOpen: (toast) => {
-                                toast.onmouseenter = Swal.stopTimer;
-                                toast.onmouseleave = Swal.resumeTimer;
-                            }
-                        });
-                        Toast.fire({
-                            icon: "success",
-                            title: data.success,
-                        });
-                    },
-                    error: function (data) {
-                        console.log('Error:', data);
-                    }
-                });
-            });
+        {{--    <!-- Delete Project -->--}}
+        {{--    $('body').on('click', '.deleteRole', function () {--}}
 
-        });
+        {{--        var id = $(this).attr('id');--}}
+        {{--        // console.log(id);--}}
+        {{--        // console.log('success:', data);--}}
+        {{--        confirm("Are You sure want to delete this Product!");--}}
+
+        {{--        $.ajax({--}}
+        {{--            type: "DELETE",--}}
+        {{--            url: "role/"+ id,--}}
+        {{--            --}}{{--url: "{{ route('project.destroy') }}" + '/' + id,--}}
+        {{--            success: function (data) {--}}
+        {{--                // table.draw();--}}
+        {{--                const Toast = Swal.mixin({--}}
+        {{--                    toast: true,--}}
+        {{--                    position: "top-end",--}}
+        {{--                    showConfirmButton: false,--}}
+        {{--                    timer: 3000,--}}
+        {{--                    timerProgressBar: true,--}}
+        {{--                    didOpen: (toast) => {--}}
+        {{--                        toast.onmouseenter = Swal.stopTimer;--}}
+        {{--                        toast.onmouseleave = Swal.resumeTimer;--}}
+        {{--                    }--}}
+        {{--                });--}}
+        {{--                Toast.fire({--}}
+        {{--                    icon: "success",--}}
+        {{--                    title: data.success,--}}
+        {{--                });--}}
+        {{--            },--}}
+        {{--            error: function (data) {--}}
+        {{--                console.log('Error:', data);--}}
+        {{--            }--}}
+        {{--        });--}}
+        {{--    });--}}
+
+        {{--});--}}
     </script>
 @endsection
