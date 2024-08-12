@@ -19,31 +19,31 @@ class UserSeeder extends Seeder
                 'name' => 'Admin',
                 'email' => 'admin@gmail.com',
                 'password' => Hash::make('admin@gmail.com'),
-                'role' => 'admin',
+                'user_type' => 'admin',
             ],
             [
                 'name' => 'Project Manager',
                 'email' => 'projectmanager@gmail.com',
                 'password' => Hash::make('projectmanager@gmail.com'),
-                'role' => 'project_manager',
+                'user_type' => 'user',
             ],
             [
                 'name' => 'Team Member',
                 'email' => 'team.member@gmail.com',
                 'password' => Hash::make('team.member@gmail.com'),
-                'role' => 'team_member',
+                'user_type' => 'user',
             ],
             [
                 'name' => 'User',
                 'email' => 'user@gmail.com',
                 'password' => Hash::make('user@gmail.com'),
-                'role' => 'user',
+                'user_type' => 'user',
             ],
             [
                 'name' => 'User 2',
                 'email' => 'user2@gmail.com',
                 'password' => Hash::make('user2@gmail.com'),
-                'role' => 'user',
+                'user_type' => 'user',
             ],
         ]);
     }

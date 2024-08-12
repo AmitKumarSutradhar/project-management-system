@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 use Yajra\DataTables\DataTables;
 
 class PermissionController extends Controller
@@ -30,9 +31,17 @@ class PermissionController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        if ($request->ajax()){
+            $role = Role::all();
+            return DataTables::of($role)
+                ->addColumn('action', function ($permission) {
+                    return '<a href="#" data-id="'.$permission->id.'" class="assignPermission btn btn-sm btn-primary">Assign Permission</a>';
+                })
+                ->make(true);
+        }
+        return view('admin.permission.create');
     }
 
     /**

@@ -6,7 +6,9 @@ use App\Http\Controllers\ProjectManagementSytemController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\User\UserProjectController;
 use App\Http\Controllers\TaskController;
+use App\Http\Controllers\User\UserTaskController;
 use App\Http\Controllers\UserManagementController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\RoleController;
@@ -17,7 +19,7 @@ Route::get('/', function () {
 })->name('home');
 
 
-Route::middleware(['auth','role:admin'])->prefix('admin')->name('admin.')->group(function (){
+Route::middleware(['auth','user_type:admin'])->prefix('admin')->name('admin.')->group(function (){
     Route::get('dashboard', [AdminController::class,'adminDashboard'])->name('dashboard');
     Route::resource('project',ProjectController::class);
     Route::resource('task',TaskController::class);
@@ -27,19 +29,12 @@ Route::middleware(['auth','role:admin'])->prefix('admin')->name('admin.')->group
     Route::resource('permission',PermissionController::class);
 });
 
-Route::middleware(['auth'])->prefix('user')->name('user.')->group(function (){
+Route::middleware(['auth','user_type:user'])->prefix('user')->name('user.')->group(function (){
     Route::get('dashboard', [UserController::class,'userDashboard'])->name('dashboard');
-//    Route::resource('project',ProjectController::class);
-//    Route::resource('task',TaskController::class);
-//    Route::resource('user',UserManagementController::class);
-//    Route::resource('comment',CommentController::class);
+    Route::resource('project',UserProjectController::class);
+    Route::resource('task',UserTaskController::class);
+    Route::resource('comment',CommentController::class);
 });
-
-
-//Route::resource('project',ProjectController::class);
-//Route::resource('task',TaskController::class);
-//Route::resource('user',UserManagementController::class);
-//Route::resource('comment',CommentController::class);
 
 
 //Route::middleware('auth')->group(function () {

@@ -1,4 +1,4 @@
-@extends('admin.master')
+@extends('user-dashboard.master')
 
 @section('title', 'All Project || Project Management System')
 
@@ -22,30 +22,30 @@
         <div class="card-body">
             <div class="table-responsive">
                 <table class="table table-bordered" id="task-data-table" width="100%" cellspacing="0">
-                   <thead>
-                       <tr>
-                           <th>#</th>
-                           <th>Task Name</th>
-                           <th>Description</th>
-                           <th>Assigned to</th>
-                           <th>Due Date</th>
-                           <th>Action</th>
-                       </tr>
-                   </thead>
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Task Name</th>
+                        <th>Description</th>
+                        <th>Assigned to</th>
+                        <th>Due Date</th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
                     <tfoot>
-                        <tr>
-                            <th>#</th>
-                            <th>Task Name</th>
-                            <th>Description</th>
-                            <th>Assigned to</th>
-                            <th>Due Date</th>
-                            <th>Action</th>
-                        </tr>
+                    <tr>
+                        <th>#</th>
+                        <th>Task Name</th>
+                        <th>Description</th>
+                        <th>Assigned to</th>
+                        <th>Due Date</th>
+                        <th>Action</th>
+                    </tr>
                     </tfoot>
                 </table>
             </div>
         </div>
-   </div>
+    </div>
     <!-- DataTales Body End -->
 
     <!-- Task Create Modal-->
@@ -59,7 +59,7 @@
                         <span aria-hidden="true">×</span>
                     </button>
                 </div>
-                <form id="create-task-form" name="createProjectForm" action="{{ route('admin.task.store') }}" method="POST">
+                <form id="create-task-form" name="createProjectForm" action="{{ route('user.task.store') }}" method="POST">
                     @csrf
                     <div class="modal-body">
                         <div class="mb-3">
@@ -171,7 +171,7 @@
             $('#task-data-table').DataTable({
                 processing: true,
                 serverSide: true,
-                ajax: '{{ route('admin.task.index') }}',
+                ajax: '{{ route('user.task.index') }}',
                 columns: [
                     { data: 'id', name: 'id' },
                     { data: 'title', name: 'title' },

@@ -5,7 +5,7 @@
         <div class="sidebar-brand-icon rotate-n-15">
             <i class="fas fa-laugh-wink"></i>
         </div>
-        <div class="sidebar-brand-text mx-3">SB Admin <sup>2</sup></div>
+        <div class="sidebar-brand-text mx-3">SB User <sup>2</sup></div>
     </a>
 
     <!-- Divider -->
@@ -13,7 +13,7 @@
 
     <!-- Nav Item - Dashboard -->
     <li class="nav-item active">
-        <a class="nav-link" href="{{ route('admin.dashboard') }}">
+        <a class="nav-link" href="{{ route('user.dashboard') }}">
             <i class="fas fa-fw fa-tachometer-alt"></i>
             <span>Dashboard</span></a>
     </li>
@@ -36,7 +36,7 @@
         <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
 {{--                <h6 class="collapse-header">Custom Components:</h6>--}}
-                <a class="collapse-item" href="{{ route('admin.project.index') }}">Manage Projects</a>
+                <a class="collapse-item" href="{{ route('user.project.index') }}">Assigned Projects</a>
 {{--                <a class="collapse-item" href="{{ route('admin.project.create') }}">Create Project</a>--}}
             </div>
         </div>
@@ -51,7 +51,7 @@
         </a>
         <div id="collapseTask" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
-                <a class="collapse-item" href="{{ route('admin.task.index') }}">Manage Tasks</a>
+                <a class="collapse-item" href="{{ route('user.task.index') }}">Manage Tasks</a>
 {{--                <a class="collapse-item" href="{{ route('task.create') }}">Create Task</a>--}}
             </div>
         </div>

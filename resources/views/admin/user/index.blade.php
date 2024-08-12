@@ -67,26 +67,20 @@
                             <input type="email" name="email" class="form-control" id="user-email-edit" disabled>
                         </div>
                         <div class="mb-3">
-                            <label for="user-status-edit" class="form-label">Choose a project</label>
+                            <label for="user-status-edit" class="form-label">Status</label>
                             <select name="status" id="user-status-edit" class="form-control">
                                 <option value="" disabled selected> -- Select Status -- </option>
                                 <option value="active"> Active </option>
                                 <option value="inactive"> Inactive </option>
-{{--                                @foreach($users as $item)--}}
-{{--                                    <option value="{{ $item->id }}">{{ $item->name }}</option>--}}
-{{--                                @endforeach--}}
                             </select>
                         </div>
                         <div class="mb-3">
                             <label for="user-status-edit" class="form-label">Choose a Role</label>
-                            <select name="role" id="user-status-edit" class="form-control">
+                            <select name="role" id="user-role-edit" class="form-control">
                                 <option value="" disabled selected> -- Select Role -- </option>
-                                <option value="project_manager"> project manager </option>
-                                <option value="team_member"> team member </option>
-                                <option value="user"> User </option>
-{{--                                @foreach($users as $item)--}}
-{{--                                    <option value="{{ $item->id }}">{{ $item->name }}</option>--}}
-{{--                                @endforeach--}}
+                                @foreach($roles as $item)
+                                    <option value="{{ $item->name }}">{{ $item->name }}</option>
+                                @endforeach
                             </select>
                         </div>
                         <div class="mb-3">
@@ -115,7 +109,7 @@
                 columns: [
                     { data: 'id', name: 'id' },
                     { data: 'name', name: 'name' },
-                    { data: 'role', name: 'role' },
+                    { data: 'roles', name: 'roles.name' },
                     { data: 'status', name: 'status' },
                     { data: 'action', name: 'action', orderable: false, searchable: false }
                 ]
@@ -123,7 +117,6 @@
         });
     </script>
     <!-- Data table data -->
-
 
     <script>
         $(function(){
@@ -138,13 +131,15 @@
                 var id = $(this).attr('data-id');
                 console.log(id)
                 $.get("{{ route('admin.user.index') }}" + '/' + id + '/edit', function (data) {
+                    console.log(data)
                     $('#editTaskModalHeading').html("Edit Task Info");
                     // $('#savedata').val("edit-user");
                     // $('#id').val(data.id);
                     $('#user-edit-id').val(data.user.id);
                     $('#edit-user-name').val(data.user.name);
                     $('#user-email-edit').val(data.user.email);
-                    // $('#edit-task-description').val(data.task.description);
+                    $('#user-status-edit').val(data.user.status);
+                    $('#user-role-edit').val(data.user.roles[0].name);
                     $('#edit-user-model').modal('show');
                 })
             });
@@ -155,7 +150,6 @@
                 e.preventDefault();
                 var id = $('#user-edit-id').val();
                 var formData = $(this).serialize();
-                console.log(id)
                 $('#save-user-edit-data').html('Updating...');
 
                 $.ajax({

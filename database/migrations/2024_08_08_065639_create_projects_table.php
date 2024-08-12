@@ -16,7 +16,8 @@ return new class extends Migration
             $table->string('name');
             $table->text('description')->nullable();
             $table->text('image')->nullable();
-            $table->enum('status', ['not started', 'in progress', 'completed'])->default('not started');
+            $table->unsignedBigInteger('assigned_to')->nullable();
+            $table->enum('status', ['Pending', 'In progress', 'Completed'])->default('Pending');
             $table->unsignedBigInteger('user_id')->nullable();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();

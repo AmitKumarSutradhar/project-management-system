@@ -6,6 +6,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Spatie\Permission\Models\Role;
 use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
@@ -46,27 +47,10 @@ class User extends Authenticatable
         ];
     }
 
-    public function isAdmin() {
-        return $this->role === 'admin';
-    }
-
-    public function isProjectManager() {
-        return $this->role === 'project_manager';
-    }
-
-    public function isTeamMember() {
-        return $this->role === 'team_member';
-    }
-
-    public function isUser() {
-        return $this->role === 'user';
-    }
-
     public function projects()
     {
         return $this->hasMany(Project::class);
     }
-
     public function tasks()
     {
         return $this->hasMany(Task::class, 'assigned_to');
@@ -75,25 +59,5 @@ class User extends Authenticatable
     public function comments()
     {
         return $this->hasMany(Comment::class);
-    }
-
-
-    public function hasRole($role)
-    {
-        if (is_string($role)) {
-            return $this->roles()->where('name', $role)->exists();
-        }
-
-        return $this->roles()->whereIn('name', (array) $role)->exists();
-    }
-
-    public function assignRole($role)
-    {
-        return $this->roles()->attach($role);
-    }
-
-    public function removeRole($role)
-    {
-        return $this->roles()->detach($role);
     }
 }

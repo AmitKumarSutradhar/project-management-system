@@ -1,4 +1,4 @@
-@extends('admin.master')
+@extends('user-dashboard.master')
 
 @section('title', 'All Project || Project Management System')
 

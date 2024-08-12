@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Project;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Spatie\Permission\Models\Role;
 use Yajra\DataTables\DataTables;
 
 class UserManagementController extends Controller
@@ -15,8 +16,11 @@ class UserManagementController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()){
-            $users = User::all();
+            $users = User::with('roles');
             return DataTables::of($users)
+                ->addColumn('roles', function ($users) {
+                    return $users->roles->pluck('name')->implode(', ');
+                })
                 ->addColumn('action', function ($user) {
                     return '<a href="#" data-id="'.$user->id.'" class="editUser btn btn-sm btn-primary">Edit</a>
                         <a href="#" data-id="'.$user->id.'" class="deleteUser btn btn-sm btn-danger">Delete</a>';
@@ -27,6 +31,7 @@ class UserManagementController extends Controller
         return view('admin.user.index',[
             'users' => User::all(),
             'projects' => Project::all(),
+            'roles' => Role::all(),
         ]);
     }
 
@@ -59,6 +64,7 @@ class UserManagementController extends Controller
      */
     public function edit(User $user)
     {
+        $user->load('roles');
         return response()->json([
             'user' => $user,
         ]);
@@ -75,8 +81,9 @@ class UserManagementController extends Controller
 
         $user->name = $request->name;
         $user->status = $request->status;
-        $user->role = $request->role;
         $user->save();
+
+        $user->assignRole($request->role);
 
         return response()->json([
             'success' => 'User Info updated successfully.',
