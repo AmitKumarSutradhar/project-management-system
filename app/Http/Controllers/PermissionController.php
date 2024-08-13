@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
@@ -9,6 +10,24 @@ use Yajra\DataTables\DataTables;
 
 class PermissionController extends Controller
 {
+    /**
+     * Show permission.
+     */
+    public function showAllPermission()
+    {
+        $permission = Permission::all();
+        return response()->json(['permission'=>$permission]);
+    }
+    /**
+     * Show permission.
+     */
+    public function assignPermissionToRole(Request $request)
+    {
+        $user = User::find($request->roleId);
+        $user->syncPermissions($request->permission);
+        return response()->json(['success' => 'Permission assigned to user successfully.']);
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -41,7 +60,9 @@ class PermissionController extends Controller
                 })
                 ->make(true);
         }
-        return view('admin.permission.create');
+        return view('admin.permission.create',[
+            'permissions' => Permission::all(),
+        ]);
     }
 
     /**
@@ -49,6 +70,10 @@ class PermissionController extends Controller
      */
     public function store(Request $request)
     {
+        return response()->json([
+            'permission'=> $request
+        ]);
+
         $permission = Permission::create([
             'name' => $request->name,
         ]);
@@ -92,4 +117,6 @@ class PermissionController extends Controller
         $permission->delete();
         return response()->json(['success'=>'Permission deleted successfully.']);
     }
+
+
 }

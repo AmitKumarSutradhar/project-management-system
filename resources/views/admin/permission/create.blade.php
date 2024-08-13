@@ -42,123 +42,27 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="modelHeading">Assign permission</h5>
+                    <h5 class="modal-title" id="assign-permission-modal-heading">Assign permission</h5>
                     <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">×</span>
                     </button>
                 </div>
-                <form id="create-permission-form" name="addNewRoleForm" action="{{ route('admin.project.store') }}" method="POST">
+                <form id="assign-permission-form" name="addNewRoleForm" action="{{ route('admin.project.store') }}" method="POST">
                     @csrf
+                    <input type="hidden" id="assign-permission-role-id" name="roleId">
                     <div class="modal-body">
-                        <div class="mb-3">
-                            <label for="" class="form-label">User</label><br>
-                            <div class="border"></div>
-                            <div class="d-flex justify-content-between">
-                                <div class="">
-                                    <input type="checkbox" name="name" class="" id="">
-                                    <label for="" class="form-label">User</label>
+                        <div class="d-flex flex-wrap justify-content-between align-items-center mb-3">
+                            @foreach($permissions as $item)
+                                <div class="mx-2">
+                                    <input type="checkbox" name="permission[]" class="" id="permission-{{ $item->id }}" value="{{ $item->name }}">
+                                    <label for="permission-{{ $item->id }}" class="form-label">{{ $item->name }}</label>
                                 </div>
-                                <div class="">
-                                    <input type="checkbox" name="name" class="" id="">
-                                    <label for="" class="form-label">Create</label>
-                                </div>
-                                <div class="">
-                                    <input type="checkbox" name="name" class="" id="">
-                                    <label for="" class="form-label">Edit</label>
-                                </div>
-                                <div class="">
-                                    <input type="checkbox" name="name" class="" id="">
-                                    <label for="" class="form-label">Update</label>
-                                </div>
-                                <div class="">
-                                    <input type="checkbox" name="name" class="" id="">
-                                    <label for="" class="form-label">Delete</label>
-                                </div>
-                            </div>
+                            @endforeach
                         </div>
-                        <div class="mb-3">
-                            <label for="" class="form-label">Project</label><br>
-                            <div class="border"></div>
-                            <div class="d-flex justify-content-between">
-                                <div class="">
-                                    <input type="checkbox" name="name" class="" id="">
-                                    <label for="" class="form-label">Project</label>
-                                </div>
-                                <div class="">
-                                    <input type="checkbox" name="name" class="" id="">
-                                    <label for="" class="form-label">Create</label>
-                                </div>
-                                <div class="">
-                                    <input type="checkbox" name="name" class="" id="">
-                                    <label for="" class="form-label">Edit</label>
-                                </div>
-                                <div class="">
-                                    <input type="checkbox" name="name" class="" id="">
-                                    <label for="" class="form-label">Update</label>
-                                </div>
-                                <div class="">
-                                    <input type="checkbox" name="name" class="" id="">
-                                    <label for="" class="form-label">Delete</label>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="mb-3">
-                            <label for="" class="form-label">Task</label><br>
-                            <div class="border"></div>
-                            <div class="d-flex justify-content-between">
-                                <div class="">
-                                    <input type="checkbox" name="name" class="" id="">
-                                    <label for="" class="form-label">Task</label>
-                                </div>
-                                <div class="">
-                                    <input type="checkbox" name="name" class="" id="">
-                                    <label for="" class="form-label">Create</label>
-                                </div>
-                                <div class="">
-                                    <input type="checkbox" name="name" class="" id="">
-                                    <label for="" class="form-label">Edit</label>
-                                </div>
-                                <div class="">
-                                    <input type="checkbox" name="name" class="" id="">
-                                    <label for="" class="form-label">Update</label>
-                                </div>
-                                <div class="">
-                                    <input type="checkbox" name="name" class="" id="">
-                                    <label for="" class="form-label">Delete</label>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="mb-3">
-                            <label for="" class="form-label">Comment</label><br>
-                            <div class="border"></div>
-                            <div class="d-flex justify-content-between">
-                                <div class="">
-                                    <input type="checkbox" name="name" class="" id="">
-                                    <label for="" class="form-label">Comment</label>
-                                </div>
-                                <div class="">
-                                    <input type="checkbox" name="name" class="" id="">
-                                    <label for="" class="form-label">Create</label>
-                                </div>
-                                <div class="">
-                                    <input type="checkbox" name="name" class="" id="">
-                                    <label for="" class="form-label">Edit</label>
-                                </div>
-                                <div class="">
-                                    <input type="checkbox" name="name" class="" id="">
-                                    <label for="" class="form-label">Update</label>
-                                </div>
-                                <div class="">
-                                    <input type="checkbox" name="name" class="" id="">
-                                    <label for="" class="form-label">Delete</label>
-                                </div>
-                            </div>
-                        </div>
-
                     </div>
                     <div class="modal-footer">
                         <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                        <button  id="save-permission-btn" class="btn btn-primary">Save Data</button>
+                        <button  id="assign-permission-btn" class="btn btn-primary">Save Data</button>
                     </div>
                 </form>
             </div>
@@ -194,11 +98,13 @@
                 }
             });
 
-            <!-- Edit Permission Info -->
+            <!-- Assign Permission -->
             $('body').on('click', '.assignPermission', function () {
                 var id = $(this).attr('data-id');
-                $.get("{{ route('admin.permission.index') }}" + '/' + id + '/edit', function (data) {
-                    $('#edit-modelHeading').html("Assign permission");
+                $('#assign-permission-role-id').val(id);
+                $.get("{{ route('admin.permission.all') }}", function (data) {
+                    console.log(data);
+                    $('#assign-permission-modal-heading').html("Assign permission to role:");
                     $('#savedata').val("edit-role");
                     $('#assign-permission-modal').modal('show');
                     $('#permission-id').val(data.permission.id);
@@ -206,22 +112,21 @@
                 })
             });
 
-            $('#edit-permission-form').on('submit', function (e) {
+            $('#assign-permission-form').on('submit', function (e) {
                 e.preventDefault();
-                var id = $('#permission-id').val();
+                // var id = $('#permission-id').val();
                 var formData = $(this).serialize();
-                $('#update-permission-btn').html('Updating...')
-                // console.log(id)
+                $('#assign-permission-btn').html('Saving...')
 
                 $.ajax({
-                    url: "{{ route('admin.permission.index') }}" + '/' + id,
-                    type: "PUT",
+                    url: "{{ route('admin.permission.assign') }}",
+                    type: "POST",
                     data: formData,
                     success: function (data) {
                         $('#edit-role-form').trigger('reset');
                         $('#edit-permission-modal').modal('hide');
                         $('#permission-datatable').DataTable().ajax.reload();
-                        $('#update-permission-btn').html('Update Info');
+                        $('#assign-permission-btn').html('Save data');
                         const Toast = Swal.mixin({
                             toast: true,
                             position: "top-end",

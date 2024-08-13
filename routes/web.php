@@ -26,6 +26,8 @@ Route::middleware(['auth','user_type:admin'])->prefix('admin')->name('admin.')->
     Route::resource('user',UserManagementController::class);
     Route::resource('comment',CommentController::class);
     Route::resource('role',RoleController::class);
+    Route::get('/permission/show-all-permission',[PermissionController::class,'showAllPermission'])->name('permission.all');
+    Route::post('/permission/assign-permission',[PermissionController::class,'assignPermissionToRole'])->name('permission.assign');
     Route::resource('permission',PermissionController::class);
 });
 
