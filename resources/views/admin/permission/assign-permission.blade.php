@@ -49,12 +49,12 @@
                 </div>
                 <form id="assign-permission-form" name="addNewRoleForm" action="{{ route('admin.project.store') }}" method="POST">
                     @csrf
-                    <input type="hidden" id="assign-permission-role-id" name="roleId">
+                    <input type="hidden" class="assign-permission-role-id" name="roleId">
                     <div class="modal-body">
                         <div class="d-flex flex-wrap justify-content-between align-items-center mb-3">
                             @foreach($permissions as $item)
                                 <div class="mx-2">
-                                    <input type="checkbox" name="permission[]" class="" id="permission-{{ $item->id }}" value="{{ $item->name }}">
+                                    <input type="checkbox" name="permission[]" class="" id="permission-{{ $item->id }}" value="{{ $item->id }}">
                                     <label for="permission-{{ $item->id }}" class="form-label">{{ $item->name }}</label>
                                 </div>
                             @endforeach
@@ -81,7 +81,7 @@
                 columns: [
                     { data: 'id', name: 'id' },
                     { data: 'name', name: 'name' },
-                    { data: 'permission', name: 'permission' },
+                    { data: 'permissions', name: 'permissions' },
                     { data: 'action', name: 'action', orderable: false, searchable: false }
                 ]
             });
@@ -100,21 +100,31 @@
 
             <!-- Assign Permission -->
             $('body').on('click', '.assignPermission', function () {
-                var id = $(this).attr('data-id');
-                $('#assign-permission-role-id').val(id);
-                $.get("{{ route('admin.permission.all') }}", function (data) {
-                    console.log(data);
-                    $('#assign-permission-modal-heading').html("Assign permission to role:");
-                    $('#savedata').val("edit-role");
-                    $('#assign-permission-modal').modal('show');
-                    $('#permission-id').val(data.permission.id);
-                    $('#edit-permission-name').val(data.permission.name);
-                })
+                var roleId = $(this).data('id');
+                var rolePermissions = $(this).data('permissions'); // JSON array of permission IDs
+                console.log(roleId)
+                // Set the role ID in the hidden input field
+                $('.assign-permission-role-id').val(roleId);
+
+                // Uncheck all checkboxes first
+                $('#assign-permission-modal input[type="checkbox"]').prop('checked', false);
+
+                // Loop through each permission checkbox and check it if it matches a role's permission
+                $('#assign-permission-modal input[type="checkbox"]').each(function() {
+                    var permissionId = $(this).val();
+                    if (rolePermissions.includes(parseInt(permissionId))) {
+                        $(this).prop('checked', true);
+                    }
+                });
+
+                // Show the modal
+                $('#assign-permission-modal').modal('show');
             });
 
+            <!-- Assign Permission - Save form data -->
             $('#assign-permission-form').on('submit', function (e) {
                 e.preventDefault();
-                // var id = $('#permission-id').val();
+
                 var formData = $(this).serialize();
                 $('#assign-permission-btn').html('Saving...')
 
@@ -123,9 +133,10 @@
                     type: "POST",
                     data: formData,
                     success: function (data) {
-                        $('#edit-role-form').trigger('reset');
-                        $('#edit-permission-modal').modal('hide');
-                        $('#permission-datatable').DataTable().ajax.reload();
+                        // console.log(data);
+                        $('#assign-permission-form').trigger('reset');
+                        $('#assign-permission-modal').modal('hide');
+                        $('#assign-permission-datatable').DataTable().ajax.reload();
                         $('#assign-permission-btn').html('Save data');
                         const Toast = Swal.mixin({
                             toast: true,
@@ -148,7 +159,6 @@
                     }
                 });
             });
-
 
         });
     </script>

@@ -104,6 +104,13 @@
                             <textarea name="description" class="form-control" id="editProjectDescription"></textarea>
                         </div>
                         <div class="mb-3">
+                            <label for="projectDescription" class="form-label" >Project Description</label>
+                            <select name="assigned_to" id="">
+                                <option value=""></option>
+                            </select>
+                            <textarea name="assigned_to" class="form-control" id="editProjectDescription"></textarea>
+                        </div>
+                        <div class="mb-3">
                             <label for="projectImage" class="form-label">Image</label>
                             <input type="file" name="image" class="form-control" id="projectImage">
                         </div>

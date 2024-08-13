@@ -23,6 +23,7 @@
                         <tr>
                             <th>#</th>
                             <th>Project Name</th>
+                            <th>Email</th>
                             <th>Role</th>
                             <th>Status</th>
                             <th>Action</th>
@@ -32,6 +33,7 @@
                         <tr>
                             <th>#</th>
                             <th>Project Name</th>
+                            <th>Email</th>
                             <th>Role</th>
                             <th>Status</th>
                             <th>Action</th>
@@ -109,7 +111,8 @@
                 columns: [
                     { data: 'id', name: 'id' },
                     { data: 'name', name: 'name' },
-                    { data: 'roles', name: 'roles.name' },
+                    { data: 'email', name: 'email' },
+                    { data: 'role', name: 'role' },
                     { data: 'status', name: 'status' },
                     { data: 'action', name: 'action', orderable: false, searchable: false }
                 ]
@@ -129,9 +132,13 @@
             <!-- Edit User Ajax End -->
             $('body').on('click', '.editUser', function () {
                 var id = $(this).attr('data-id');
-                console.log(id)
+
+                // console.log(id)
                 $.get("{{ route('admin.user.index') }}" + '/' + id + '/edit', function (data) {
                     console.log(data)
+                    var roleName = (data.user.roles && data.user.roles.length > 0) ? data.user.roles[0].name : null;
+                    // var roleName = data.user.roles[0].name;
+                    console.log(roleName)
                     $('#editTaskModalHeading').html("Edit Task Info");
                     // $('#savedata').val("edit-user");
                     // $('#id').val(data.id);
@@ -139,7 +146,12 @@
                     $('#edit-user-name').val(data.user.name);
                     $('#user-email-edit').val(data.user.email);
                     $('#user-status-edit').val(data.user.status);
-                    $('#user-role-edit').val(data.user.roles[0].name);
+                    if(roleName){
+                        $('#user-role-edit').val(roleName);
+                    } else{
+                        $('#user-role-edit').val('');
+                    }
+
                     $('#edit-user-model').modal('show');
                 })
             });

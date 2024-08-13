@@ -45,6 +45,7 @@ class ProjectController extends Controller
         $project = new Project();
         $project->name = $request->name;
         $project->description = $request->description;
+        $project->assigned_to = $request->assigned_to;
         $project->user_id  = Auth::user()->id;
         $project->save();
 

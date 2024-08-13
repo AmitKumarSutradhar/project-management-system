@@ -21,9 +21,18 @@ class UserTaskController extends Controller
             $tasks = Task::where('assigned_to', Auth::id())->get();
             return DataTables::of($tasks)
                 ->addColumn('action', function ($task) {
-                    return '<a href="#" id="'.$task->id.'" class="editTask btn btn-sm btn-primary">Edit</a>
-                        <a href="#" id="'.$task->id.'" class="deleteTask btn btn-sm btn-danger">Delete</a>';
+                    $actions = '';
+                    if ( auth()->user()->can('edit-task') ){
+                        $actions .= '<a href="javascript:void(0)" id="'.$task->id.'" class="editTask btn btn-sm btn-primary">Edit</a> ';
+                    }
+                    if ( auth()->user()->can('delete-task') ){
+                        $actions .= '<a href="javascript:void(0)" id="'.$task->id.'"  class="deleteTask btn btn-sm btn-danger">Delete</a> ';
+                    }
+                    return $actions;
+//                    return '<a href="#" id="'.$task->id.'" class="editTask btn btn-sm btn-primary">Edit</a>
+//                        <a href="#" id="'.$task->id.'" class="deleteTask btn btn-sm btn-danger">Delete</a>';
                 })
+                ->rawColumns(['action'])
                 ->make(true);
         }
 

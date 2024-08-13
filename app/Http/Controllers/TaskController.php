@@ -18,6 +18,9 @@ class TaskController extends Controller
         if ($request->ajax()){
             $tasks = Task::all();
             return DataTables::of($tasks)
+                ->editColumn('assigned_to', function ($task) {
+                    return $task->user->name;
+                })
                 ->addColumn('action', function ($task) {
                     return '<a href="#" id="'.$task->id.'" class="editTask btn btn-sm btn-primary">Edit</a>
                         <a href="#" id="'.$task->id.'" class="deleteTask btn btn-sm btn-danger">Delete</a>';
@@ -47,9 +50,6 @@ class TaskController extends Controller
      */
     public function store(Request $request)
     {
-//        return response()->json([
-//            'request' => $request->all(),
-//        ]);
 
         $task = new Task();
         $task->title = $request->title;
@@ -77,7 +77,9 @@ class TaskController extends Controller
      */
     public function edit(Task $task)
     {
-        //
+        return response()->json([
+            'task' => $task,
+        ]);
     }
 
     /**
@@ -85,7 +87,15 @@ class TaskController extends Controller
      */
     public function update(Request $request, Task $task)
     {
-        //
+
+        $task->title =  $request->title;
+        $task->description = $request->description;
+        $task->project_id  = $request->project_id;
+        $task->assigned_to  = $request->assigned_to;
+        $task->due_date  = $request->due_date;
+        $task->save();
+
+        return response()->json(['success'=>'Task updated successfully.']);
     }
 
     /**

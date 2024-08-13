@@ -15,16 +15,25 @@ class UserManagementController extends Controller
      */
     public function index(Request $request)
     {
+
         if ($request->ajax()){
-            $users = User::with('roles');
+            $users = User::with('roles')->get();
             return DataTables::of($users)
-                ->addColumn('roles', function ($users) {
-                    return $users->roles->pluck('name')->implode(', ');
+//                ->addColumn('roles', function ($users) {
+//                    return $users->roles->pluck('name')->implode(', ');
+//                })
+                ->editColumn('role', function ($user) {
+                    return $user->roles->pluck('name')->first();
+//                    return $user->roles->pluck('name')->implode(',');
+                })
+                ->editColumn('status', function ($user) {
+                    return  $user->status == 'active' ? 'Active' : 'Inactive';
                 })
                 ->addColumn('action', function ($user) {
-                    return '<a href="#" data-id="'.$user->id.'" class="editUser btn btn-sm btn-primary">Edit</a>
-                        <a href="#" data-id="'.$user->id.'" class="deleteUser btn btn-sm btn-danger">Delete</a>';
+                    return '<a href="javascript:void(0)" data-id="'.$user->id.'" class="editUser btn btn-sm btn-primary">Edit</a>
+                        <a href="javascript:void(0)" data-id="'.$user->id.'" class="deleteUser btn btn-sm btn-danger">Delete</a>';
                 })
+                ->rawColumns(['role', 'action'])
                 ->make(true);
         }
 
@@ -75,15 +84,12 @@ class UserManagementController extends Controller
      */
     public function update(Request $request, User $user)
     {
-//        return response()->json([
-//            'request' => $request->all(),
-//        ]);
 
         $user->name = $request->name;
         $user->status = $request->status;
         $user->save();
 
-        $user->assignRole($request->role);
+        $user->syncRoles($request->role);
 
         return response()->json([
             'success' => 'User Info updated successfully.',

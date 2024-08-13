@@ -23,8 +23,9 @@ class PermissionController extends Controller
      */
     public function assignPermissionToRole(Request $request)
     {
-        $user = User::find($request->roleId);
-        $user->syncPermissions($request->permission);
+        $role = Role::findOrFail($request->roleId);
+        $newPermissions = $request->permission;
+        $role->permissions()->sync($newPermissions);
         return response()->json(['success' => 'Permission assigned to user successfully.']);
     }
 
@@ -53,14 +54,28 @@ class PermissionController extends Controller
     public function create(Request $request)
     {
         if ($request->ajax()){
-            $role = Role::all();
-            return DataTables::of($role)
-                ->addColumn('action', function ($permission) {
-                    return '<a href="#" data-id="'.$permission->id.'" class="assignPermission btn btn-sm btn-primary">Assign Permission</a>';
+            $roles = Role::all();
+            return DataTables::of($roles)
+                ->editColumn('permissions', function ($role) {
+                    return $role->permissions->pluck('name')->map(function($name) {
+                        return '<span class="bg-success text-white rounded rounded-2 px-3">'.$name.'</span >';
+                    })->join(' ');
                 })
+                ->addColumn('action', function ($role) {
+                    $permissions = $role->permissions->pluck('id')->toArray(); // Get the permission IDs as an array
+                    $permissionsJson = htmlspecialchars(json_encode($permissions), ENT_QUOTES, 'UTF-8');
+
+                    return '<a href="#"
+                                data-id="' . $role->id . '"
+                                data-permissions="' . $permissionsJson . '"
+                                class="assignPermission btn btn-sm btn-primary"
+                                data-bs-toggle="modal"
+                                data-bs-target="#assign-permission-modal">Assign Permission</a>';
+                })
+                ->rawColumns(['permissions','action'])
                 ->make(true);
         }
-        return view('admin.permission.create',[
+        return view('admin.permission.assign-permission',[
             'permissions' => Permission::all(),
         ]);
     }
@@ -74,11 +89,11 @@ class PermissionController extends Controller
             'permission'=> $request
         ]);
 
-        $permission = Permission::create([
-            'name' => $request->name,
-        ]);
+//        $permission = Permission::create([
+//            'name' => $request->name,
+//        ]);
 
-        return response()->json(['success'=>'Permission created successfully.']);
+//        return response()->json(['success'=>'Permission created successfully.']);
     }
 
     /**

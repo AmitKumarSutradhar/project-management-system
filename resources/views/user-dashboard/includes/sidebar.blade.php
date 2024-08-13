@@ -26,23 +26,25 @@
         Interface
     </div>
 
-    <!-- Nav Item - Pages Collapse Menu -->
-    <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
-           aria-expanded="true" aria-controls="collapseTwo">
-            <i class="fas fa-fw fa-cog"></i>
-            <span>Project</span>
-        </a>
-        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-            <div class="bg-white py-2 collapse-inner rounded">
-{{--                <h6 class="collapse-header">Custom Components:</h6>--}}
-                <a class="collapse-item" href="{{ route('user.project.index') }}">Assigned Projects</a>
-{{--                <a class="collapse-item" href="{{ route('admin.project.create') }}">Create Project</a>--}}
+    <!-- Nav Item - Project -->
+    @if( auth()->user()->can('project') )
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
+               aria-expanded="true" aria-controls="collapseTwo">
+                <i class="fas fa-fw fa-cog"></i>
+                <span>Project</span>
+            </a>
+            <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <a class="collapse-item" href="{{ route('user.project.index') }}">Assigned Projects</a>
+                </div>
             </div>
-        </div>
-    </li>
+        </li>
+    @endif
+
 
     <!-- Nav Item - Task -->
+    @if( auth()->user()->can('task') )
     <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTask"
            aria-expanded="true" aria-controls="collapseTask">
@@ -52,11 +54,10 @@
         <div id="collapseTask" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <a class="collapse-item" href="{{ route('user.task.index') }}">Manage Tasks</a>
-{{--                <a class="collapse-item" href="{{ route('task.create') }}">Create Task</a>--}}
             </div>
         </div>
     </li>
-
+    @endif
     <!-- Divider -->
     <hr class="sidebar-divider d-none d-md-block">
 

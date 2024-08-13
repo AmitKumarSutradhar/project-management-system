@@ -117,8 +117,9 @@
                         <span aria-hidden="true">×</span>
                     </button>
                 </div>
-                <form id="create-task-form" name="createProjectForm" action="{{ route('admin.task.store') }}" method="POST">
+                <form id="updateTaskForm" name="createProjectForm" action="{{ route('admin.task.store') }}" method="POST">
                     @csrf
+                    <input type="text" name="hidden" class="form-control"  id="edit-task-id" value="">
                     <div class="modal-body">
                         <div class="mb-3">
                             <label for="project-name" class="form-label">Project name</label>
@@ -147,8 +148,8 @@
                             </select>
                         </div>
                         <div class="mb-3">
-                            <label for="projectImage" class="form-label">Due Date</label>
-                            <input type="date" name="due_date" class="form-control" id="projectImage">
+                            <label for="taskDueDate" class="form-label">Due Date</label>
+                            <input type="date" name="due-date" class="form-control" id="edit-task-due-date">
                         </div>
                         <div class="mb-3">
                             <label for="projectImage" class="form-label">Image</label>
@@ -157,13 +158,13 @@
                     </div>
                     <div class="modal-footer">
                         <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                        <button  id="save-task-data" class="btn btn-primary" >Submit</button>
+                        <button  id="updateTaskData" class="btn btn-primary" >Submit</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
-    <!-- Task Create Modal-->
+    <!-- Task Edit Modal-->
 
     <!-- Data table data -->
     <script>
@@ -176,7 +177,7 @@
                     { data: 'id', name: 'id' },
                     { data: 'title', name: 'title' },
                     { data: 'description', name: 'description' },
-                    { data: 'assigned_to', name: 'assigned_to.user.name' },
+                    { data: 'assigned_to', name: 'assigned_to' },
                     { data: 'due_date', name: 'due_date' },
                     { data: 'action', name: 'action', orderable: false, searchable: false }
                 ]
@@ -250,11 +251,13 @@
                 var id = $(this).attr('id');
                 console.log(id)
                 $.get("{{ route('admin.task.index') }}" + '/' + id + '/edit', function (data) {
+                    console.log(data)
                     $('#editTaskModalHeading').html("Edit Task Info");
-                    // $('#savedata').val("edit-user");
+                    $('#save-task-data').val("edit-task");
                     // $('#id').val(data.id);
                     $('#edit-task-id').val(data.task.id);
-                    $('#edit-task-name').val(data.task.name);
+                    $('#edit-task-name').val(data.task.title);
+                    $('#edit-task-due-date').val(data.task.due_date);
                     $('#edit-task-description').val(data.task.description);
                     $('#edit-task-model').modal('show');
                 })
@@ -262,24 +265,22 @@
             <!-- Edit Project Ajax End -->
 
             <!-- Update Task Info Ajax End -->
-            $('#updateProjectForm').on('submit', function (e) {
+            $('#updateTaskForm').on('submit', function (e) {
                 e.preventDefault();
-                var id = $('#edit-project-id').val();
+                var id = $('#edit-task-id').val();
                 var formData = $(this).serialize();
                 // console.log(id)
-                $('#updateProjectData').html('Updating...');
+                $('#updateTaskData').html('Updating...');
 
                 $.ajax({
-                    url: "{{ route('admin.project.index') }}" + '/' + id,
+                    url: "{{ route('admin.task.index') }}" + '/' + id,
                     method: "PUT",
                     data: formData,
                     success: function (response) {
-                        // console.log(response)
-                        $('#updateProjectForm').trigger("reset");
-                        $('#editProjectInfo').modal('hide');
-                        $('#project-datatable').DataTable().ajax.reload();
-                        $('#updateProjectData').html('Update');
-                        // $('#updateProjectData').html('Update');
+                        $('#updateTaskForm').trigger("reset");
+                        $('#edit-task-model').modal('hide');
+                        $('#task-data-table').DataTable().ajax.reload();
+                        $('#updateTaskData').html('Update');
 
                         const Toast = Swal.mixin({
                             toast: true,
