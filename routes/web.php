@@ -11,6 +11,7 @@ use App\Http\Controllers\TaskController;
 use App\Http\Controllers\User\UserTaskController;
 use App\Http\Controllers\UserManagementController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\User\UserCommentController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\PermissionController;
 
@@ -35,7 +36,7 @@ Route::middleware(['auth','user_type:user'])->prefix('user')->name('user.')->gro
     Route::get('dashboard', [UserController::class,'userDashboard'])->name('dashboard');
     Route::resource('project',UserProjectController::class);
     Route::resource('task',UserTaskController::class);
-    Route::resource('comment',CommentController::class);
+    Route::resource('comment',UserCommentController::class);
 });
 
 

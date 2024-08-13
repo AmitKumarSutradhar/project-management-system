@@ -22,6 +22,7 @@ class UserTaskController extends Controller
             return DataTables::of($tasks)
                 ->addColumn('action', function ($task) {
                     $actions = '';
+                    $actions .= '<a href="'. route('user.task.show', $task->id) .' " id="'.$task->id.'"  class="btn btn-sm btn-danger">Show</a> ';
                     if ( auth()->user()->can('edit-task') ){
                         $actions .= '<a href="javascript:void(0)" id="'.$task->id.'" class="editTask btn btn-sm btn-primary">Edit</a> ';
                     }
@@ -78,7 +79,7 @@ class UserTaskController extends Controller
      */
     public function show(Task $task)
     {
-        return view('admin.task.show',[
+        return view('user-dashboard.task.show',[
             'task' => $task,
         ]);
     }
