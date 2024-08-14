@@ -110,12 +110,10 @@
                             <label for="projectDescription" class="form-label" >Project Assign to</label>
                             <select name="assigned_to" id="" class="form-control">
                                 <option value="" selected disabled>-- Select Options --</option>
-                                @foreach($users as $user)
-                                    @if($user->roles[0]->name === 'Project Manager')
-                                        <option value="{{  $user->id }}">
-                                                {{ $user->name}}
-                                        </option>
-                                    @endif
+                                @foreach(projectManagers as $user)
+                                    <option value="{{  $user->id }}">
+                                        {{ $user->name}}
+                                    </option>
                                 @endforeach
 
                             </select>

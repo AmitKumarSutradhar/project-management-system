@@ -17,10 +17,10 @@ class ProjectController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()){
-            $projects = Project::all();
+            $projects = Project::with('user')->get();
             return DataTables::of($projects)
                 ->editColumn('assigned_to', function ($project) {
-                    return $project->user->name;
+                    return $project;
                 })
                 ->addColumn('action', function ($project) {
                     return '<a href="#" id="'.$project->id.'" class="editProject btn btn-sm btn-primary">Edit</a>
@@ -30,7 +30,7 @@ class ProjectController extends Controller
         }
         return view('admin.project.index',[
             'projects' => Project::all(),
-            'users' => User::with('roles')->get(),
+            'projectManagers' => User::with('roles')->where('name', 'Project Manager')->get(),
         ]);
     }
 
