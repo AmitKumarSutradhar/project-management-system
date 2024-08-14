@@ -113,7 +113,8 @@
                     { data: 'name', name: 'name' },
                     { data: 'email', name: 'email' },
                     { data: 'role', name: 'role' },
-                    { data: 'status', name: 'status' },
+                    { data: 'role', name: 'role' },
+                    { data: 'assigned_to', name: 'assigned_to' },
                     { data: 'action', name: 'action', orderable: false, searchable: false }
                 ]
             });

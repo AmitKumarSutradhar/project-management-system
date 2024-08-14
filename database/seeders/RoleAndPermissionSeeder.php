@@ -29,6 +29,7 @@ class RoleAndPermissionSeeder extends Seeder
         Permission::create(['name' => 'delete-project']);
         Permission::create(['name' => 'create-task']);
         Permission::create(['name' => 'edit-task']);
+        Permission::create(['name' => 'edit-task-status']);
         Permission::create(['name' => 'update-task']);
         Permission::create(['name' => 'delete-task']);
         Permission::create(['name' => 'create-comment']);

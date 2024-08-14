@@ -274,6 +274,11 @@
             });
             <!-- Update Project Ajax End -->
 
+
+            <!-- Update Project Ajax End -->
+            <!-- Update Project Ajax End -->
+
+
             <!-- Delete Project Ajax Start -->
             $('body').on('click', '.deleteProject', function () {
                 var id = $(this).attr('id');

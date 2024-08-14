@@ -16,10 +16,13 @@ return new class extends Migration
             $table->string('title');
             $table->text('description')->nullable();
             $table->unsignedBigInteger('project_id');
+            $table->unsignedBigInteger('created_by');
             $table->unsignedBigInteger('assigned_to')->nullable();
             $table->date('due_date')->nullable();
             $table->text('image')->nullable();
+            $table->enum('status', ['Pending', 'In progress', 'Completed'])->default('Pending');
             $table->timestamps();
+            $table->foreign('created_by')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('project_id')->references('id')->on('projects')->onDelete('cascade');
             $table->foreign('assigned_to')->references('id')->on('users')->onDelete('set null');
         });

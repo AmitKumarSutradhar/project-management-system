@@ -7,6 +7,7 @@ use App\Models\Comment;
 use App\Models\Project;
 use App\Models\Task;
 use App\Models\User;
+use App\Notifications\TaskAssignNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\DataTables;
@@ -25,7 +26,10 @@ class UserTaskController extends Controller
                     $actions = '';
                     $actions .= '<a href="'. route('user.task.show', $task->id) .' " id="'.$task->id.'"  class="btn btn-sm btn-danger">Show</a> ';
                     if ( auth()->user()->can('edit-task') ){
-                        $actions .= '<a href="javascript:void(0)" id="'.$task->id.'" class="editTask btn btn-sm btn-primary">Edit</a> ';
+                        $actions .= '<a href="javascript:void(0)" id="'.$task->id.'" class="editTaskStatus btn btn-sm btn-primary">Submit</a> ';
+                    }
+                    if ( auth()->user()->can('edit-task') ){
+                        $actions .= '<a href="javascript:void(0)" id="'.$task->id.'" class="editTask btn btn-sm btn-warning">Edit</a> ';
                     }
                     if ( auth()->user()->can('delete-task') ){
                         $actions .= '<a href="javascript:void(0)" id="'.$task->id.'"  class="deleteTask btn btn-sm btn-danger">Delete</a> ';
@@ -40,7 +44,7 @@ class UserTaskController extends Controller
 
         return view('user-dashboard.task.index',[
             'projects' => Project::all(),
-            'users' => User::all(),
+            'users' => User::with('roles')->get(),
             'task' => Task::where('assigned_to ',auth()->user()->id),
         ]);
     }
@@ -60,6 +64,7 @@ class UserTaskController extends Controller
      */
     public function store(Request $request)
     {
+        dd($request->assigned_to);
 //        return response()->json([
 //            'request' => $request->all(),
 //        ]);
@@ -71,6 +76,11 @@ class UserTaskController extends Controller
         $task->assigned_to  = $request->assigned_to;
         $task->due_date  = $request->due_date;
         $task->save();
+
+        if ($request->assigned_to){
+            $task->user()->notify(new TaskAssignNotification($task));
+        }
+
 
         return response()->json(['success'=>'Task created successfully.']);
     }
@@ -91,7 +101,7 @@ class UserTaskController extends Controller
      */
     public function edit(Task $task)
     {
-        //
+        return response()->json(['task'=>$task]);
     }
 
     /**
@@ -109,5 +119,10 @@ class UserTaskController extends Controller
     {
         $task->delete();
         return response()->json(['success'=>'Task deleted successfully.']);
+    }
+
+    public function taskStatusEdit(Task $task)
+    {
+        return response()->json(['task'=>$task]);
     }
 }

@@ -13,6 +13,16 @@
         <div class="col-xl-12 mb-4">
             <div class="">
                 <h6>Hello 👋, {{ auth()->user()->name }} welcome to dashboard.</h6>
+
+                <h6>Your notifications: </h6>
+                @foreach (auth()->user()->notifications as $notification)
+                   <ul>
+                       <li>
+                           Task "{{ $notification->data['task_name'] }}" has been assigned by.
+{{--                           Task "{{ $notification->data['task_name'] }}" has been assigned by {{ $notification->data['assigned_by'] }}.--}}
+                       </li>
+                   </ul>
+                @endforeach
             </div>
         </div>
 

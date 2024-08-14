@@ -80,7 +80,7 @@
                             <textarea name="description" class="form-control" id="task-image"></textarea>
                         </div>
                         <div class="mb-3">
-                            <label for="project-name" class="form-label">Choose a project</label>
+                            <label for="project-name" class="form-label">Choose a member</label>
                             <select name="assigned_to" id="user-name" class="form-control">
                                 <option value="" disabled> -- Select Member -- </option>
                                 @foreach($users as $item)
@@ -140,7 +140,7 @@
                         </div>
                         <div class="mb-3">
                             <label for="project-name" class="form-label">Choose a project</label>
-                            <select name="assigned_to" id="user-name" class="form-control">
+                            <select name="assigned_to" id="assigned_to" class="form-control">
                                 <option value="" disabled> -- Select Member -- </option>
                                 @foreach($users as $item)
                                     <option value="{{ $item->id }}">{{ $item->name }}</option>
@@ -257,6 +257,7 @@
                     // $('#id').val(data.id);
                     $('#edit-task-id').val(data.task.id);
                     $('#edit-task-name').val(data.task.title);
+                    $('#assigned_to').val(data.task.assigned_to);
                     $('#edit-task-due-date').val(data.task.due_date);
                     $('#edit-task-description').val(data.task.description);
                     $('#edit-task-model').modal('show');
@@ -306,6 +307,8 @@
                 });
             });
             <!-- Update Task Info Ajax End -->
+
+
 
             <!-- Delete Project Ajax Start -->
             $('body').on('click', '.deleteTask', function () {

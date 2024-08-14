@@ -35,6 +35,7 @@ Route::middleware(['auth','user_type:admin'])->prefix('admin')->name('admin.')->
 Route::middleware(['auth','user_type:user'])->prefix('user')->name('user.')->group(function (){
     Route::get('dashboard', [UserController::class,'userDashboard'])->name('dashboard');
     Route::resource('project',UserProjectController::class);
+    Route::get('task/{task}/task-status-edit',[UserTaskController::class, 'taskStatusEdit'])->name('task.status.edit');
     Route::resource('task',UserTaskController::class);
     Route::resource('comment',UserCommentController::class);
 });
