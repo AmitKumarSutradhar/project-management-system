@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Models\Comment;
 use App\Models\Project;
 use App\Models\Task;
 use App\Models\User;
@@ -40,7 +41,7 @@ class UserTaskController extends Controller
         return view('user-dashboard.task.index',[
             'projects' => Project::all(),
             'users' => User::all(),
-            'task' => Task::all(),
+            'task' => Task::where('assigned_to ',auth()->user()->id),
         ]);
     }
 
@@ -81,6 +82,7 @@ class UserTaskController extends Controller
     {
         return view('user-dashboard.task.show',[
             'task' => $task,
+            'comments' => Comment::where('user_id', auth()->user()->id)->get(),
         ]);
     }
 

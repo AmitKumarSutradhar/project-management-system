@@ -7,9 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Comment extends Model
 {
+
     use HasFactory;
 
-    protected $fillable = ['comment', 'task_id', 'user_id'];
+    protected $fillable = ['title','comment','task_id', 'user_id'];
 
     public function task()
     {

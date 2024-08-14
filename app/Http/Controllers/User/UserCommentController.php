@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Models\Comment;
 use Illuminate\Http\Request;
 
 class UserCommentController extends Controller
@@ -20,7 +21,8 @@ class UserCommentController extends Controller
      */
     public function create()
     {
-        //
+
+
     }
 
     /**
@@ -28,7 +30,15 @@ class UserCommentController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $comment = new Comment();
+        $comment->title = $request->title;
+        $comment->comment = $request->comment;
+        $comment->user_id = $request->user_id;
+        $comment->task_id = $request->task_id;
+        $comment->save();
+
+        return redirect()->back();
+
     }
 
     /**

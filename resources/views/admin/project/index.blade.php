@@ -26,6 +26,7 @@
                             <th>#</th>
                             <th>Project Name</th>
                             <th>Description</th>
+                            <th>Assigned to</th>
                             <th>Status</th>
                             <th>Action</th>
                         </tr>
@@ -35,6 +36,7 @@
                             <th>#</th>
                             <th>Project Name</th>
                             <th>Description</th>
+                            <th>Assigned to</th>
                             <th>Status</th>
                             <th>Action</th>
                         </tr>
@@ -43,6 +45,7 @@
             </div>
         </div>
     </div>
+
 
     <!-- Project Create Modal-->
     <div class="modal fade" id="projectAjaxModel" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
@@ -104,11 +107,18 @@
                             <textarea name="description" class="form-control" id="editProjectDescription"></textarea>
                         </div>
                         <div class="mb-3">
-                            <label for="projectDescription" class="form-label" >Project Description</label>
-                            <select name="assigned_to" id="">
-                                <option value=""></option>
+                            <label for="projectDescription" class="form-label" >Project Assign to</label>
+                            <select name="assigned_to" id="" class="form-control">
+                                <option value="" selected disabled>-- Select Options --</option>
+                                @foreach($users as $user)
+                                    @if($user->roles[0]->name === 'Project Manager')
+                                        <option value="{{  $user->id }}">
+                                                {{ $user->name}}
+                                        </option>
+                                    @endif
+                                @endforeach
+
                             </select>
-                            <textarea name="assigned_to" class="form-control" id="editProjectDescription"></textarea>
                         </div>
                         <div class="mb-3">
                             <label for="projectImage" class="form-label">Image</label>
@@ -136,6 +146,7 @@
                     { data: 'id', name: 'id' },
                     { data: 'name', name: 'name' },
                     { data: 'description', name: 'description' },
+                    { data: 'assigned_to', name: 'assigned_to' },
                     { data: 'status', name: 'status' },
                     { data: 'action', name: 'action', orderable: false, searchable: false }
                 ]

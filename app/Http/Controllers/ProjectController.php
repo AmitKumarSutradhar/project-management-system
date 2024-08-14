@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Project;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\DataTables;
@@ -18,6 +19,9 @@ class ProjectController extends Controller
         if ($request->ajax()){
             $projects = Project::all();
             return DataTables::of($projects)
+                ->editColumn('assigned_to', function ($project) {
+                    return $project->user->name;
+                })
                 ->addColumn('action', function ($project) {
                     return '<a href="#" id="'.$project->id.'" class="editProject btn btn-sm btn-primary">Edit</a>
                         <a href="#" id="'.$project->id.'" class="deleteProject btn btn-sm btn-danger">Delete</a>';
@@ -26,6 +30,7 @@ class ProjectController extends Controller
         }
         return view('admin.project.index',[
             'projects' => Project::all(),
+            'users' => User::with('roles')->get(),
         ]);
     }
 
@@ -79,6 +84,8 @@ class ProjectController extends Controller
     {
         $project->name = $request->name;
         $project->description = $request->description;
+        $project->assigned_to = $request->assigned_to;
+        $project->assigned_to = $request->assigned_to;
         $project->user_id  = Auth::user()->id;
         $project->save();
 
