@@ -65,6 +65,16 @@
     <i class="fas fa-angle-up"></i>
 </a>
 
+<script>
+    $(function () {
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+    });
+</script>
+
 <!-- Bootstrap core JavaScript-->
 <script src="{{ asset('/') }}assets/admin/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
@@ -83,7 +93,6 @@
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
-@stack('scripts')
 
 </body>
 

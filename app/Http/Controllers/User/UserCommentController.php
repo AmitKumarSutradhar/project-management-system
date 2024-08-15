@@ -37,7 +37,9 @@ class UserCommentController extends Controller
         $comment->task_id = $request->task_id;
         $comment->save();
 
-        return redirect()->back();
+        return response()->json([
+            'success' => 'Comment submitted.'
+        ]);
 
     }
 

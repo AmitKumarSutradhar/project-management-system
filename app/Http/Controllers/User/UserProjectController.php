@@ -16,11 +16,10 @@ class UserProjectController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()){
-            $projects = Project::where('ass');
+            $projects = Project::where('assigned_to',auth()->user()->id)->get();
             return DataTables::of($projects)
                 ->addColumn('action', function ($project) {
-                    return '<a href="#" id="'.$project->id.'" class="editProject btn btn-sm btn-primary">Edit</a>
-                        <a href="#" id="'.$project->id.'" class="deleteProject btn btn-sm btn-danger">Delete</a>';
+                    return '<a href="#" data-id="'.$project->id.'" class="edit-project-status btn btn-sm btn-success">Update Status</a>';
                 })
                 ->make(true);
         }
@@ -76,13 +75,12 @@ class UserProjectController extends Controller
      */
     public function update(Request $request, Project $project)
     {
-        $project->name = $request->name;
-        $project->description = $request->description;
-        $project->user_id  = Auth::user()->id;
+
+        $project->status = $request->status;
         $project->save();
 
         return response()->json([
-            'success' => 'Project updated successfully.',
+            'success' => 'Project status updated successfully.',
         ]);
     }
 

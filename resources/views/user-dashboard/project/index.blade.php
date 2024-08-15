@@ -39,31 +39,28 @@
         </div>
     </div>
 
-    <!-- Project Create Modal-->
-    <div class="modal fade" id="projectAjaxModel" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    <!-- Project Status Update Modal-->
+    <div class="modal fade" id="editProjectStatus" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
          aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="modelHeading">Create a project</h5>
+                    <h5 class="modal-title" id="modelHeading">Update <span id="project-name"></span> status</h5>
                     <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">×</span>
                     </button>
                 </div>
-                <form id="createProjectForm" name="createProjectForm" action="{{ route('admin.project.store') }}" method="POST">
+                <form id="project-status-update-form" name="createProjectForm" action="{{ route('admin.project.store') }}" method="POST">
                     @csrf
                     <div class="modal-body">
+                        <input type="hidden" id="project-id">
                         <div class="mb-3">
-                            <label for="projectName" class="form-label">Project Name</label>
-                            <input type="text" name="name" class="form-control"  id="projectName" aria-describedby="emailHelp">
-                        </div>
-                        <div class="mb-3">
-                            <label for="projectDescription" class="form-label" >Project Description</label>
-                            <textarea name="description" class="form-control" id="projectDescription"></textarea>
-                        </div>
-                        <div class="mb-3">
-                            <label for="projectImage" class="form-label">Image</label>
-                            <input type="file" name="image" class="form-control" id="projectImage">
+                            <label for="projectName" class="form-label">Project Status</label>
+                            <select name="status" id="project-status-option" class="form-control">
+                                <option value="Pending">Pending</option>
+                                <option value="In progress">In progress</option>
+                                <option value="Completed">Completed</option>
+                            </select>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -74,6 +71,7 @@
             </div>
         </div>
     </div>
+    <!-- Project Status Update Modal-->
 
     <!-- Project Edit Modal-->
     <div class="modal fade" id="editProjectInfo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
@@ -111,7 +109,7 @@
             </div>
         </div>
     </div>
-
+    <!-- Project Edit Modal-->
 
     <!-- Project Data table data -->
     <script>
@@ -119,7 +117,7 @@
             $('#project-datatable').DataTable({
                 processing: true,
                 serverSide: true,
-                ajax: '{{ route('admin.project.index') }}',
+                ajax: '{{ route('user.project.index') }}',
                 columns: [
                     { data: 'id', name: 'id' },
                     { data: 'name', name: 'name' },
@@ -142,40 +140,35 @@
             });
 
 
-            <!-- Edit Project Ajax End -->
-            $('body').on('click', '.editProject', function () {
-                var id = $(this).attr('id');
+            <!-- Edit Project Status Ajax End -->
+            $('body').on('click', '.edit-project-status', function () {
+                var id = $(this).attr('data-id');
                 // console.log(id)
-                $.get("{{ route('admin.project.index') }}" + '/' + id + '/edit', function (data) {
-                    $('#editProjectModalHeading').html("Edit Project Info check");
-                    $('#savedata').val("edit-user");
-                    $('#id').val(data.id);
-                    $('#edit-project-id').val(data.project.id);
-                    $('#editProjectName').val(data.project.name);
-                    $('#editProjectDescription').val(data.project.description);
-                    $('#editProjectInfo').modal('show');
+                $.get("{{ route('user.project.index') }}" + '/' + id + '/edit', function (data) {
+                    console.log(data)
+                    $('#project-name').html(data.project.title);
+                    $('#project-status-option').val(data.project.status);
+                    $('#project-id').val(data.project.id);
+                    $('#editProjectStatus').modal('show');
                 })
             });
-            <!-- Edit Project Ajax End -->
+            <!-- Edit Project Status Ajax End -->
 
             <!-- Update Project Ajax End -->
-            $('#updateProjectForm').on('submit', function (e) {
+            $('#project-status-update-form').on('submit', function (e) {
                 e.preventDefault();
-                var id = $('#edit-project-id').val();
+                var id = $('#project-id').val();
                 var formData = $(this).serialize();
                 $('#updateProjectData').html('Updating...');
 
                 $.ajax({
-                    url: "{{ route('admin.project.index') }}" + '/' + id,
+                    url: "{{ route('user.project.index') }}" + '/' + id,
                     method: "PUT",
                     data: formData,
                     success: function (response) {
-                        // console.log(response)
-                        $('#updateProjectForm').trigger("reset");
-                        $('#editProjectInfo').modal('hide');
+                        $('#project-status-update-form').trigger("reset");
+                        $('#editProjectStatus').modal('hide');
                         $('#project-datatable').DataTable().ajax.reload();
-                        $('#updateProjectData').html('Update');
-                        // $('#updateProjectData').html('Update');
 
                         const Toast = Swal.mixin({
                             toast: true,

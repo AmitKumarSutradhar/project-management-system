@@ -26,13 +26,13 @@
                    </tr>
                    <tr>
                        <td scope="col">Project Name</td>
-                       {{--                        <td><pre>{{ $task->name }}</pre></td>--}}
+{{--                                               <td><pre>{{ $task }}</pre></td>--}}
                        <td>{{ $task->project->name}}</td>
                    </tr>
 
                    <tr>
                        <td scope="col">Due Date</td>
-                       <td>{{ $task->due_date }}</td>
+                       <td>{{ !empty($task->due_date) ? $task->due_date : 'Not fixed' }}</td>
                    </tr>
                    </tbody>
                </table>
@@ -40,68 +40,102 @@
        </div>
     </div>
 
-    <div class="card p-3 mb-3">
-       <div class="card-body">
-           <h2>All comments</h2>
-           @foreach($comments as $comment)
-               <div class="row border border-bottom-1 p-4">
-                   <div class="col-md-1">
-                       <img class="mr-3 rounded-circle img-thumbnail" alt="Bootstrap Media Preview" src="https://i.imgur.com/stD0Q19.jpg" style="width: 60px; height: 60px" />
-                   </div>
-                   <div class="col-md-11">
-                       <div class="d-flex justify-content-between">
-                           <h3>{{ $comment->title }}</h3>
-                           <span>{{ $comment->created_at->diffForHumans() }}</span>
-                       </div>
-                       <p class="pe-4">{{ $comment->comment }}</p>
-                   </div>
-
-               </div>
-           @endforeach
-       </div>
-    </div>
-
-    <div class="card p-3 mb-3">
-        <div class="card-body">
-            <h2>Add your comment</h2>
-            <hr>
-            <div class="row">
-                <div class="col-md-12">
-                    <form action="{{ route('user.comment.store') }}" method="POST" >
-                        @csrf
-                        <input type="hidden" name="task_id" class="form-control"  value="{{ $task->id }}">
-                        <input type="hidden" name="user_id" class="form-control"  value="{{ auth()->user()->id }}">
-                        <div class="mb-3">
-                            <label for="projectName" class="form-label">Title</label>
-                            <input type="text" name="title" class="form-control"  id="task-name" aria-describedby="emailHelp">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card h-100 p-3 mb-3">
+                <div class="card-body">
+                    <h2>Add your comment</h2>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <form action="{{ route('user.comment.store') }}" method="POST" id="createNewComment">
+                                @csrf
+                                <input type="hidden" name="task_id" class="form-control"  value="{{ $task->id }}">
+                                <input type="hidden" name="user_id" class="form-control"  value="{{ auth()->user()->id }}">
+                                <div class="mb-3">
+                                    <label for="projectName" class="form-label">Title</label>
+                                    <input type="text" name="title" class="form-control"  id="task-name" aria-describedby="emailHelp">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="projectDescription" class="form-label" >Comment</label>
+                                    <textarea name="comment" class="form-control" id="task-image" style="height: 300px;"></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-success my-2" id="commentSubmitBtn" style="float: right;">Comment</button>
+                            </form>
                         </div>
-                        <div class="mb-3">
-                            <label for="projectDescription" class="form-label" >Comment</label>
-                            <textarea name="comment" class="form-control" id="task-image" style="height: 300px;"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card h-100 p-3 mb-3">
+                <div class="card-body">
+                    <h2>All comments</h2>
+                    <hr>
+                    @if(count($comments) > 0)
+                        <div class="table-responsive border-0">
+                            <table class="table">
+                                <tbody class="comment-table-body">
+                                    @foreach($comments as $comment)
+                                        <tr>
+                                            <td scope="col" style=" width: 100px; ">
+                                                <img class="mr-3 rounded-circle img-thumbnail" alt="Bootstrap Media Preview" src="https://i.imgur.com/stD0Q19.jpg" style="width: 60px; height: 60px" />
+                                            </td>
+                                            <td>
+                                                <div class="d-flex justify-content-between">
+                                                    <h3>{{ $comment->title }}</h3>
+                                                    <span>{{ $comment->created_at->diffForHumans() }}</span>
+                                                </div>
+                                                <p class="pe-4">{{ $comment->comment }}</p>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
                         </div>
-                        <button type="submit" class="btn btn-success my-2" style="float: right;">Comment</button>
-                    </form>
+                    @else
+                        <div class="d-flex justify-content-center align-items-center">
+                            <p class="text-center">No comments available.</p>
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>
     </div>
 
 
+
+
     <script>
-        $(function () {
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        $('body').on('click', '#commentSubmitBtn', function (e) {
+            e.preventDefault();
+            // var id = $(this).attr('id');
+            // console.log(id);
+            var formData = $('#createNewComment').serialize();
+            $.ajax({
+                url: "{{ route('user.comment.store') }}",
+                type: "POST",
+                dataType: 'json',
+                data: formData,
+                success: function (data) {
+                    var html = '<tr> ' +
+                                '<td> <img class="mr-3 rounded-circle img-thumbnail" alt="Bootstrap Media Preview" src="https://i.imgur.com/stD0Q19.jpg" style="width: 60px; height: 60px" /> </td> ' +
+                                '<td> ' +
+                                    '<div>  ' +
+                                        '<div class="d-flex justify-content-between"> ' +
+                                            '<h3> + data.title +</h3>' +
+                                        '</div>' +
+                                        '<p>data.comment</p>' +
+                                    '</div>' +
+                                ' </td> ' +
+                        '</tr>';
+                    $('.comment-table-body').append(html);
+                },
+                error: function (data) {
+                    console.log('Error:', data);
                 }
             });
 
-        });
-        $('body').on('click', '.editTaskStatus', function () {
-            var id = $(this).attr('id');
-            console.log(id);
-            $.get("{{ route('user.comment.index') }}"+ '/' + id + "/edit",function (data) {
-                  console.log(id);
-            });
         });
     </script>
 @endsection
