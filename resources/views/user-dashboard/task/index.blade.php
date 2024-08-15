@@ -63,6 +63,14 @@
                     @csrf
                     <div class="modal-body">
                         <div class="mb-3">
+                            <label for="projectName" class="form-label">Task Name</label>
+                            <input type="text" name="title" class="form-control"  id="task-name" aria-describedby="emailHelp">
+                        </div>
+                        <div class="mb-3">
+                            <label for="projectDescription" class="form-label" >Task Description</label>
+                            <textarea name="description" class="form-control" id="task-image"></textarea>
+                        </div>
+                        <div class="mb-3">
                             <label for="project-name" class="form-label">Project name</label>
                             <select name="project_id" id="project-name" class="form-control">
                                 <option value="" disabled> -- Select project -- </option>
@@ -72,28 +80,12 @@
                             </select>
                         </div>
                         <div class="mb-3">
-                            <label for="projectName" class="form-label">Task Name</label>
-                            <input type="text" name="title" class="form-control"  id="task-name" aria-describedby="emailHelp">
-                        </div>
-                        <div class="mb-3">
-                            <label for="projectDescription" class="form-label" >Task Description</label>
-                            <textarea name="description" class="form-control" id="task-image"></textarea>
-                        </div>
-                        <div class="mb-3">
-                            @foreach($users as $item)
-                                <pre>{{ count($item->roles) }}</pre>
-                            @endforeach
-
                             <label for="project-name" class="form-label">Assign a member</label>
                             <select name="assigned_to" id="user-name" class="form-control">
                                 <option value="" disabled> -- Select Member -- </option>
-
-{{--                                    @foreach($users as $item)--}}
-{{--                                        @if(count($item->roles > 0) && ($item->roles->name === ('Team Member')))--}}
-{{--                                            <option value="{{ $item->roles[0]->id }}">{{ $item->roles[0]->name }}</option>--}}
-{{--                                        @endif--}}
-{{--                                    @endforeach--}}
-
+                                @foreach($users as $item)
+                                    <option>{{ count($item->roles) }}</option>
+                                @endforeach
                             </select>
                         </div>
                         <div class="mb-3">
@@ -115,7 +107,7 @@
     </div>
 
     <!-- Task Edit Modal-->
-    <div class="modal fade" id="edit-task-model" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    <div class="modal fade" id="edit-user-task-model" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
          aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -125,9 +117,17 @@
                         <span aria-hidden="true">×</span>
                     </button>
                 </div>
-                <form id="create-task-form" name="createProjectForm" action="{{ route('admin.task.store') }}" method="POST">
+                <form id="edit-user-task-form" name="createProjectForm" action="{{ route('admin.task.store') }}" method="POST">
                     @csrf
                     <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="projectName" class="form-label">Task Name</label>
+                            <input type="text" name="title" class="form-control"  id="edit-task-name" aria-describedby="emailHelp">
+                        </div>
+                        <div class="mb-3">
+                            <label for="projectDescription" class="form-label" >Task Description</label>
+                            <textarea name="description" class="form-control" id="edit-task-description"></textarea>
+                        </div>
                         <div class="mb-3">
                             <label for="project-name" class="form-label">Project name</label>
                             <select name="project_id" id="project-name" class="form-control">
@@ -136,14 +136,6 @@
                                     <option value="{{ $item->id }}">{{ $item->name }}</option>
                                 @endforeach
                             </select>
-                        </div>
-                        <div class="mb-3">
-                            <label for="projectName" class="form-label">Task Name</label>
-                            <input type="text" name="title" class="form-control"  id="edit-task-name" aria-describedby="emailHelp">
-                        </div>
-                        <div class="mb-3">
-                            <label for="projectDescription" class="form-label" >Task Description</label>
-                            <textarea name="description" class="form-control" id="edit-task-description"></textarea>
                         </div>
                         <div class="mb-3">
                             <label for="project-name" class="form-label">Choose a project</label>
@@ -173,13 +165,13 @@
     </div>
     <!-- Task Create Modal-->
 
-    <!-- Task Edit Modal-->
+    <!-- Task Status Edit Modal-->
     <div class="modal fade" id="edit-task-status-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
          aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="editTaskModalHeading">Edit Task Statu</h5>
+                    <h5 class="modal-title" id="editTaskModalHeading">Edit Task Status</h5>
                     <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">×</span>
                     </button>
@@ -204,7 +196,7 @@
             </div>
         </div>
     </div>
-    <!-- Task Create Modal-->
+    <!-- Task Status Create Modal-->
 
     <!-- Data table data -->
     <script>
@@ -287,23 +279,25 @@
             <!-- Create New Task End -->
 
             <!-- Edit Project Ajax End -->
-            $('body').on('click', '.editTask', function () {
+            $('body').on('click', '.editTask', function (e) {
+                e.preventDefault();
                 var id = $(this).attr('id');
-                console.log(id)
+                console.log(data)
                 $.get("{{ route('user.task.index') }}" + '/' + id + '/edit', function (data) {
+                    console.log(data)
                     $('#editTaskModalHeading').html("Edit Task Info");
                     // $('#savedata').val("edit-user");
                     // $('#id').val(data.id);
                     // $('#edit-task-id').val(data.task.id);
-                    // $('#edit-task-name').val(data.task.name);
+                    $('#edit-task-name').val(data.task.name);
                     // $('#edit-task-description').val(data.task.description);
-                    $('#edit-task-model').modal('show');
+                    $('#edit-user-task-model').modal('show');
                 })
             });
             <!-- Edit Project Ajax End -->
 
             <!-- Update Task Info Ajax End -->
-            $('#updateProjectForm').on('submit', function (e) {
+            $('#edit-user-task-form').on('submit', function (e) {
                 e.preventDefault();
                 var id = $('#edit-project-id').val();
                 var formData = $(this).serialize();

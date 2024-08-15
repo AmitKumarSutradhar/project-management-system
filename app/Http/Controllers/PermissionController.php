@@ -85,15 +85,13 @@ class PermissionController extends Controller
      */
     public function store(Request $request)
     {
+        $permission = new Permission();
+        $permission->name = $request->name;
+        $permission->save();
         return response()->json([
-            'permission'=> $request
+            'permission'=> $request,
+            'success'=> 'Permission added successfully.'
         ]);
-
-//        $permission = Permission::create([
-//            'name' => $request->name,
-//        ]);
-
-//        return response()->json(['success'=>'Permission created successfully.']);
     }
 
     /**

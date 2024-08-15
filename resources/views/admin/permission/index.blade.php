@@ -8,7 +8,7 @@
         <h1 class="h3 text-gray-800">Roles</h1>
         <div class="">
             <a href="javascirpt:void(0)" id="create-new-permission" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
-                <i class="fas fa-plus fa-sm text-white-50"></i> Create Role
+                <i class="fas fa-plus fa-sm text-white-50"></i> Create Permission
             </a>
         </div>
     </div>
@@ -127,7 +127,6 @@
 
             <!-- Add New Role Start -->
             $('#create-new-permission').on('click',function () {
-                $('#savedata').val("create-project");
                 $('#id').val('');
                 $('#create-permission-form').trigger("reset");
                 $('#save-permission-btn').html("Add Permission");

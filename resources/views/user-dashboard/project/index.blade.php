@@ -6,11 +6,6 @@
     <!-- Page Heading -->
     <div class="d-flex justify-content-between mb-3">
         <h1 class="h3 text-gray-800">Projects</h1>
-        <div class="">
-            <a href="javascirpt:void(0)" id="createNewProject" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
-                <i class="fas fa-plus fa-sm text-white-50"></i> Create Project
-            </a>
-        </div>
     </div>
 
     <!-- DataTales Example -->
@@ -146,55 +141,6 @@
                 }
             });
 
-            <!-- Create New Project Ajax Start -->
-            $('body').on('click','#createNewProject',function () {
-                $('#savedata').val("create-project");
-                $('#id').val('');
-                $('#createProjectForm').trigger("reset");
-                $('#modelHeading').html("Create New Project");
-                $('#projectAjaxModel').modal('show');
-            });
-
-            $('#savedata').click(function (e) {
-                e.preventDefault();
-                $(this).html('Sending...');
-
-                $.ajax({
-                    data: $('#createProjectForm').serialize(),
-                    url: "{{ route('admin.project.store') }}",
-                    type: "POST",
-                    dataType: 'json',
-                    success: function (data) {
-                        $('#createProjectForm').trigger("reset");
-                        $('#projectAjaxModel').modal('hide');
-                        $('#project-datatable').DataTable().ajax.reload();
-                        $('#savedata').html('Send');
-
-                        const Toast = Swal.mixin({
-                            toast: true,
-                            position: "top-end",
-                            showConfirmButton: false,
-                            timer: 3000,
-                            timerProgressBar: true,
-                            didOpen: (toast) => {
-                                toast.onmouseenter = Swal.stopTimer;
-                                toast.onmouseleave = Swal.resumeTimer;
-                            }
-                        });
-                        Toast.fire({
-                            icon: "success",
-                            title: data.success,
-                        });
-
-                    },
-                    error: function (data) {
-                        console.log('Error:', data);
-                        $('#savedata').html('Save Changes');
-                    }
-                });
-            });
-            <!-- Create New Project Ajax End -->
-
 
             <!-- Edit Project Ajax End -->
             $('body').on('click', '.editProject', function () {
@@ -256,41 +202,6 @@
             });
             <!-- Update Project Ajax End -->
 
-            <!-- Delete Project Ajax Start -->
-            $('body').on('click', '.deleteProject', function () {
-                var id = $(this).attr('id');
-                // console.log(id);
-                Swal.fire({
-                    title: "Are you sure?",
-                    text: "You won't be able to revert this!",
-                    icon: "warning",
-                    showCancelButton: true,
-                    confirmButtonColor: "#3085d6",
-                    cancelButtonColor: "#d33",
-                    confirmButtonText: "Yes, delete it!",
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            $.ajax({
-                                url: "{{ route('admin.project.index') }}" + '/' + id,
-                                method: "DELETE",
-                                success: function (data) {
-                                    // Ask for confirm delete
-                                    $('#project-datatable').DataTable().ajax.reload();
-                                },
-                                error: function (data) {
-                                    console.log('Error:', data);
-                                }
-                            });
-                            Swal.fire({
-                                title: "Deleted!",
-                                text: "Your file has been deleted.",
-                                icon: "success"
-                            });
-                        }
-                });
-
-            });
-            <!-- Delete Project Ajax End -->
 
         });
     </script>

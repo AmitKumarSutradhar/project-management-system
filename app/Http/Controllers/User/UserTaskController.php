@@ -24,9 +24,9 @@ class UserTaskController extends Controller
             return DataTables::of($tasks)
                 ->addColumn('action', function ($task) {
                     $actions = '';
-                    $actions .= '<a href="'. route('user.task.show', $task->id) .' " id="'.$task->id.'"  class="btn btn-sm btn-danger">Show</a> ';
-                    if ( auth()->user()->can('edit-task') ){
-                        $actions .= '<a href="javascript:void(0)" id="'.$task->id.'" class="editTaskStatus btn btn-sm btn-primary">Submit</a> ';
+                    $actions .= '<a href="'. route('user.task.show', $task->id) .' " id="'.$task->id.'"  class="btn btn-sm btn-primary">Show</a> ';
+                    if ( auth()->user()->can('submit-task') ){
+                        $actions .= '<a href="javascript:void(0)" id="'.$task->id.'" class="editTaskStatus btn btn-sm btn-info">Submit</a> ';
                     }
                     if ( auth()->user()->can('edit-task') ){
                         $actions .= '<a href="javascript:void(0)" id="'.$task->id.'" class="editTask btn btn-sm btn-warning">Edit</a> ';

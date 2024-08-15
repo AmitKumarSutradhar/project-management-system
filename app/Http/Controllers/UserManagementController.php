@@ -19,12 +19,8 @@ class UserManagementController extends Controller
         if ($request->ajax()){
             $users = User::with('roles')->get();
             return DataTables::of($users)
-//                ->addColumn('roles', function ($users) {
-//                    return $users->roles->pluck('name')->implode(', ');
-//                })
                 ->editColumn('role', function ($user) {
                     return $user->roles->pluck('name')->first();
-//                    return $user->roles->pluck('name')->implode(',');
                 })
                 ->editColumn('status', function ($user) {
                     return  $user->status == 'active' ? 'Active' : 'Inactive';
@@ -33,7 +29,7 @@ class UserManagementController extends Controller
                     return '<a href="javascript:void(0)" data-id="'.$user->id.'" class="editUser btn btn-sm btn-primary">Edit</a>
                         <a href="javascript:void(0)" data-id="'.$user->id.'" class="deleteUser btn btn-sm btn-danger">Delete</a>';
                 })
-                ->rawColumns(['role', 'action'])
+                ->rawColumns(['role', 'status' , 'action'])
                 ->make(true);
         }
 

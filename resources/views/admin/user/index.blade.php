@@ -22,7 +22,7 @@
                     <thead>
                         <tr>
                             <th>#</th>
-                            <th>Project Name</th>
+                            <th>User Name</th>
                             <th>Email</th>
                             <th>Role</th>
                             <th>Status</th>
@@ -32,7 +32,7 @@
                     <tfoot>
                         <tr>
                             <th>#</th>
-                            <th>Project Name</th>
+                            <th>User Name</th>
                             <th>Email</th>
                             <th>Role</th>
                             <th>Status</th>
@@ -113,8 +113,7 @@
                     { data: 'name', name: 'name' },
                     { data: 'email', name: 'email' },
                     { data: 'role', name: 'role' },
-                    { data: 'role', name: 'role' },
-                    { data: 'assigned_to', name: 'assigned_to' },
+                    { data: 'status', name: 'status' },
                     { data: 'action', name: 'action', orderable: false, searchable: false }
                 ]
             });

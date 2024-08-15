@@ -70,8 +70,12 @@
                             <textarea name="description" class="form-control" id="projectDescription"></textarea>
                         </div>
                         <div class="mb-3">
-                            <label for="projectImage" class="form-label">Image</label>
-                            <input type="file" name="image" class="form-control" id="projectImage">
+                            <label for="projectImage" class="form-label">Assign Manager</label>
+                            <select name="assigned_to" id="" class="form-control">
+                                @foreach($projectManagers as $item)
+                                <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                @endforeach
+                            </select>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -107,15 +111,11 @@
                             <textarea name="description" class="form-control" id="editProjectDescription"></textarea>
                         </div>
                         <div class="mb-3">
-                            <label for="projectDescription" class="form-label" >Project Assign to</label>
+                            <label for="projectImage" class="form-label">Assigned Manager</label>
                             <select name="assigned_to" id="" class="form-control">
-                                <option value="" selected disabled>-- Select Options --</option>
-                                @foreach(projectManagers as $user)
-                                    <option value="{{  $user->id }}">
-                                        {{ $user->name}}
-                                    </option>
+                                @foreach($projectManagers as $item)
+                                    <option value="{{ $item->id }}">{{ $item->name }}</option>
                                 @endforeach
-
                             </select>
                         </div>
                         <div class="mb-3">

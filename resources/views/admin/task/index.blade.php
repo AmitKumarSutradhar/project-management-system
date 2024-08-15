@@ -119,17 +119,8 @@
                 </div>
                 <form id="updateTaskForm" name="createProjectForm" action="{{ route('admin.task.store') }}" method="POST">
                     @csrf
-                    <input type="text" name="hidden" class="form-control"  id="edit-task-id" value="">
+                    <input type="hidden" name="" class="form-control"  id="edit-task-id" value="">
                     <div class="modal-body">
-                        <div class="mb-3">
-                            <label for="project-name" class="form-label">Project name</label>
-                            <select name="project_id" id="project-name" class="form-control">
-                                <option value="" disabled> -- Select project -- </option>
-                                @foreach($projects as $item)
-                                    <option value="{{ $item->id }}">{{ $item->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
                         <div class="mb-3">
                             <label for="projectName" class="form-label">Task Name</label>
                             <input type="text" name="title" class="form-control"  id="edit-task-name" aria-describedby="emailHelp">
@@ -139,7 +130,16 @@
                             <textarea name="description" class="form-control" id="edit-task-description"></textarea>
                         </div>
                         <div class="mb-3">
-                            <label for="project-name" class="form-label">Choose a project</label>
+                            <label for="project-name" class="form-label">Select project</label>
+                            <select name="project_id" id="project-name" class="form-control">
+                                <option value="" disabled> -- Select project -- </option>
+                                @foreach($projects as $item)
+                                    <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="project-name" class="form-label">Choose a member</label>
                             <select name="assigned_to" id="assigned_to" class="form-control">
                                 <option value="" disabled> -- Select Member -- </option>
                                 @foreach($users as $item)
@@ -254,7 +254,6 @@
                     console.log(data)
                     $('#editTaskModalHeading').html("Edit Task Info");
                     $('#save-task-data').val("edit-task");
-                    // $('#id').val(data.id);
                     $('#edit-task-id').val(data.task.id);
                     $('#edit-task-name').val(data.task.title);
                     $('#assigned_to').val(data.task.assigned_to);
